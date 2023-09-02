@@ -30,11 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigForm));
             this.QualityCB = new System.Windows.Forms.ComboBox();
-            this.customFtoggle = new System.Windows.Forms.CheckBox();
+            this.CustomFtoggle = new System.Windows.Forms.CheckBox();
             this.RPCToggle = new System.Windows.Forms.CheckBox();
             this.ScaleCB = new System.Windows.Forms.ComboBox();
             this.ExitButton = new System.Windows.Forms.Button();
-            this.rdfToggle = new System.Windows.Forms.CheckBox();
+            this.RDFToggle = new System.Windows.Forms.CheckBox();
             this.USBToggle = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -64,18 +64,18 @@
             this.QualityCB.Name = "QualityCB";
             this.QualityCB.Size = new System.Drawing.Size(121, 21);
             this.QualityCB.TabIndex = 0;
-            this.QualityCB.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.QualityCB.SelectedIndexChanged += new System.EventHandler(this.QualityCB_SelectedIndexChanged);
             // 
             // customFtoggle
             // 
-            this.customFtoggle.AutoSize = true;
-            this.customFtoggle.Location = new System.Drawing.Point(34, 69);
-            this.customFtoggle.Name = "customFtoggle";
-            this.customFtoggle.Size = new System.Drawing.Size(104, 17);
-            this.customFtoggle.TabIndex = 1;
-            this.customFtoggle.Text = "Customf Support";
-            this.customFtoggle.UseVisualStyleBackColor = true;
-            this.customFtoggle.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.CustomFtoggle.AutoSize = true;
+            this.CustomFtoggle.Location = new System.Drawing.Point(34, 69);
+            this.CustomFtoggle.Name = "customFtoggle";
+            this.CustomFtoggle.Size = new System.Drawing.Size(104, 17);
+            this.CustomFtoggle.TabIndex = 1;
+            this.CustomFtoggle.Text = "Customf Support";
+            this.CustomFtoggle.UseVisualStyleBackColor = true;
+            this.CustomFtoggle.CheckedChanged += new System.EventHandler(this.CustomFtoggle_CheckedChanged);
             // 
             // RPCToggle
             // 
@@ -86,7 +86,7 @@
             this.RPCToggle.TabIndex = 2;
             this.RPCToggle.Text = "Rich Presence";
             this.RPCToggle.UseVisualStyleBackColor = true;
-            this.RPCToggle.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.RPCToggle.CheckedChanged += new System.EventHandler(this.RPCToggle_CheckedChanged);
             // 
             // ScaleCB
             // 
@@ -100,7 +100,7 @@
             this.ScaleCB.Name = "ScaleCB";
             this.ScaleCB.Size = new System.Drawing.Size(121, 21);
             this.ScaleCB.TabIndex = 3;
-            this.ScaleCB.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            this.ScaleCB.SelectedIndexChanged += new System.EventHandler(this.ScaleCB_SelectedIndexChanged);
             // 
             // ExitButton
             // 
@@ -110,18 +110,18 @@
             this.ExitButton.TabIndex = 4;
             this.ExitButton.Text = "Save and Close";
             this.ExitButton.UseVisualStyleBackColor = true;
-            this.ExitButton.Click += new System.EventHandler(this.button1_Click);
+            this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
             // rdfToggle
             // 
-            this.rdfToggle.AutoSize = true;
-            this.rdfToggle.Location = new System.Drawing.Point(34, 46);
-            this.rdfToggle.Name = "rdfToggle";
-            this.rdfToggle.Size = new System.Drawing.Size(89, 17);
-            this.rdfToggle.TabIndex = 7;
-            this.rdfToggle.Text = "RDF Loading";
-            this.rdfToggle.UseVisualStyleBackColor = true;
-            this.rdfToggle.CheckedChanged += new System.EventHandler(this.rdfToggle_CheckedChanged);
+            this.RDFToggle.AutoSize = true;
+            this.RDFToggle.Location = new System.Drawing.Point(34, 46);
+            this.RDFToggle.Name = "rdfToggle";
+            this.RDFToggle.Size = new System.Drawing.Size(89, 17);
+            this.RDFToggle.TabIndex = 7;
+            this.RDFToggle.Text = "RDF Loading";
+            this.RDFToggle.UseVisualStyleBackColor = true;
+            this.RDFToggle.CheckedChanged += new System.EventHandler(this.RDFToggle_CheckedChanged);
             // 
             // USBToggle
             // 
@@ -297,11 +297,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.USBToggle);
-            this.Controls.Add(this.rdfToggle);
+            this.Controls.Add(this.RDFToggle);
             this.Controls.Add(this.ExitButton);
             this.Controls.Add(this.ScaleCB);
             this.Controls.Add(this.RPCToggle);
-            this.Controls.Add(this.customFtoggle);
+            this.Controls.Add(this.CustomFtoggle);
             this.Controls.Add(this.QualityCB);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -316,11 +316,11 @@
         #endregion
 
         private System.Windows.Forms.ComboBox QualityCB;
-        private System.Windows.Forms.CheckBox customFtoggle;
+        private System.Windows.Forms.CheckBox CustomFtoggle;
         private System.Windows.Forms.CheckBox RPCToggle;
         private System.Windows.Forms.ComboBox ScaleCB;
         private System.Windows.Forms.Button ExitButton;
-        private System.Windows.Forms.CheckBox rdfToggle;
+        private System.Windows.Forms.CheckBox RDFToggle;
         private System.Windows.Forms.CheckBox USBToggle;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

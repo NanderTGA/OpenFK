@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenFK.Properties;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -18,70 +19,85 @@ namespace OpenFK
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            if (File.Exists(Directory.GetCurrentDirectory() + @"\update.bat"))
-            {
-                File.Delete(Directory.GetCurrentDirectory() + @"\update.bat");
-            }
+
+            if (File.Exists("update.bat")) File.Delete("update.bat");
+
             if (args.Contains("/config"))
             {
                 Application.Run(new ConfigForm());
+                return;
             }
-            else if (File.Exists(Directory.GetCurrentDirectory() + @"\Flash.ocx"))
+
+            if (!File.Exists("Flash.ocx"))
             {
-                if(CalculateMD5(Directory.GetCurrentDirectory() + @"\Flash.ocx") == "0c8fbd12f40dcd5a1975b671f9989900" ||
-                   CalculateMD5(Directory.GetCurrentDirectory() + @"\Flash.ocx") == "28642aa6626e42701677a1f3822306b0")
-                {
-                    if (MessageBox.Show("The current Flash.ocx is a buggy version! It causes several problems in the game. Do you want to fetch a compatible OCX?", "OpenFK", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
-                    {
-                        File.WriteAllText(Directory.GetCurrentDirectory() + @"\FetchOCX.bat", Properties.Resources.FetchOCX);
-                        ProcessStartInfo fetchocx = new ProcessStartInfo(Directory.GetCurrentDirectory() + @"\FetchOCX.bat");
-                        fetchocx.UseShellExecute = false;
-                        var ocxprocess = Process.Start(fetchocx);
-                        ocxprocess.WaitForExit();
-                        File.Delete(Directory.GetCurrentDirectory() + @"\FetchOCX.bat");
-                        Application.Restart();
-                    }
-                    else
-                    {
-                        try
-                        {
-                            Application.Run(new Form1(args));
-                        }
-                        catch
-                        {
-                            MessageBox.Show("There was an error starting the game! This could happen because of a 64 bit OCX running on a 32 bit OpenFK.", "OpenFK", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        Application.Run(new Form1(args));
-                    }
-                    catch
-                    {
-                        MessageBox.Show("There was an error starting the game! This could happen because of a 64 bit OCX running on a 32 bit OpenFK.", "OpenFK", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }else if (MessageBox.Show("Flash.ocx is not found! Do you want to fetch a compatible OCX?", "OpenFK", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+                bool downloadOCX = MessageBox.Show(
+                    "Flash.ocx could not be found! Do you want to fetch a compatible OCX? Pressing no will close openFK.",
+                    "Flash.ocx not found",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Error
+                ) == DialogResult.Yes;
+
+                if (!downloadOCX) return;
+
+                FetchOCX();
+                return;
+            }
+
+            string ocxMD5 = CalculateMD5("Flash.ocx");
+            if (
+                (
+                    ocxMD5 == "0c8fbd12f40dcd5a1975b671f9989900" ||
+                    ocxMD5 == "28642aa6626e42701677a1f3822306b0"
+                ) &&
+                MessageBox.Show(
+                    "The current Flash.ocx is a buggy version! It causes several problems in the game. Do you want to fetch a compatible OCX?",
+                    "OpenFK",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                ) == DialogResult.Yes
+            )
             {
-                File.WriteAllText(Directory.GetCurrentDirectory() + @"\FetchOCX.bat", Properties.Resources.FetchOCX);
-                ProcessStartInfo fetchocx = new ProcessStartInfo(Directory.GetCurrentDirectory() + @"\FetchOCX.bat");
-                fetchocx.UseShellExecute = false;
-                var ocxprocess = Process.Start(fetchocx);
-                ocxprocess.WaitForExit();
-                File.Delete(Directory.GetCurrentDirectory() + @"\FetchOCX.bat");
-                Application.Restart();
+                FetchOCX();
+                return;
+            }
+            
+            try
+            {
+                Application.Run(new Form1(args));
+            }
+            catch
+            {
+                _ = MessageBox.Show(
+                    "There was an error starting the game! This could happen because of a 64 bit OCX running on a 32 bit OpenFK. This could also happen for any other reason.",
+                    "OpenFK",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                throw;
             }
         }
 
-        static string CalculateMD5(string filename) //Generates the MD5 hash.
+        private static string CalculateMD5(string filename)
         {
-            using var md5 = MD5.Create();
-            using var stream = File.OpenRead(filename);
-            var hash = md5.ComputeHash(stream); //Computes the MD5 hash of the swf.
-            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant(); //Converts the hash to a readable string to compare.
+            using MD5 md5 = MD5.Create();
+            using FileStream stream = File.OpenRead(filename);
+            byte[] hash = md5.ComputeHash(stream); // Converts the hash to a readable string to compare.
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        }
+
+        private static void FetchOCX()
+        {
+            File.WriteAllText("FetchOCX.bat", Resources.FetchOCX);
+
+            ProcessStartInfo fetchOCXProcessStartInfo = new ProcessStartInfo("FetchOCX.bat")
+            {
+                UseShellExecute = false
+            };
+            Process fetchOCXProcess = Process.Start(fetchOCXProcessStartInfo);
+            fetchOCXProcess.WaitForExit();
+
+            File.Delete("FetchOCX.bat");
+            Application.Restart();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using AxShockwaveFlashObjects;
+using AxShockwaveFlashObjects;
 using DiscordRPC;
 using Microsoft.Win32;
 using OpenFK.OFK.Common;
@@ -173,7 +173,7 @@ namespace OpenFK
 
         private void flashPlayerAS3_FSCommand(object sender, _IShockwaveFlashEvents_FSCommandEvent e)
         {
-            LogManager.LogIncoming("[AS3] [SendMsg] " + e.args);
+            LogManager.LogIncoming($"[AS3] [{e.command}] {e.args}");
             if(e.args.Contains("<save_jpeg ")) //Saving jpegs for UG game thumbnails or game over backgrounds.
             {
                 XmlDocument request = new XmlDocument(); //e.args to xml
@@ -288,6 +288,13 @@ namespace OpenFK
             // We put these here because these use a different xml scheme and to prevent clutter in the general logs.
             // It is also important to return, since only we call this and know to not put anything else in it to prevent bugs due to bad code below.
 
+            if (e.command != "SendMsg")
+            {
+                Debug.WriteLine("WARNING: unhandled FSCommand");
+                LogManager.LogIncoming($"[AS2] [UNHANDLED] [{e.command}] {e.args}");
+                return;
+            }
+
             if (e.args.Contains("<log")) // logs from modified CLogger
             {
                 var log = new XmlDocument();
@@ -332,7 +339,7 @@ namespace OpenFK
             }
             else
             {   // Don't log incoming message that are logs to prevent clutter.
-                LogManager.LogIncoming("[AS2] [SendMsg] " + e.args);
+                LogManager.LogIncoming($"[AS2] [{e.command}] {e.args}");
             }
 
             //

@@ -172,6 +172,8 @@ namespace OpenFK
             }
 
             //End of USB Initialization
+            TopMost = true;
+            TopMost = false;
         }
 
         private void flashPlayerAS3_FSCommand(object sender, _IShockwaveFlashEvents_FSCommandEvent e)

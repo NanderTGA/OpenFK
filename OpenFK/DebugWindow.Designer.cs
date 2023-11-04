@@ -92,10 +92,10 @@ namespace OpenFK
             // generalLogs
             // 
             this.generalLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.generalLogs.Location = new System.Drawing.Point(3, 3);
+            this.generalLogs.Location = new System.Drawing.Point(0, 0);
             this.generalLogs.Name = "generalLogs";
             this.generalLogs.ReadOnly = true;
-            this.generalLogs.Size = new System.Drawing.Size(593, 423);
+            this.generalLogs.Size = new System.Drawing.Size(599, 429);
             this.generalLogs.TabIndex = 0;
             this.generalLogs.Text = "";
             // 
@@ -120,7 +120,6 @@ namespace OpenFK
             this.logTab.Controls.Add(this.generalLogs);
             this.logTab.Location = new System.Drawing.Point(4, 22);
             this.logTab.Name = "logTab";
-            this.logTab.Padding = new System.Windows.Forms.Padding(3);
             this.logTab.Size = new System.Drawing.Size(599, 429);
             this.logTab.TabIndex = 0;
             this.logTab.Text = "Log";
@@ -131,7 +130,6 @@ namespace OpenFK
             this.FileLogsTab.Controls.Add(this.fileLogs);
             this.FileLogsTab.Location = new System.Drawing.Point(4, 22);
             this.FileLogsTab.Name = "FileLogsTab";
-            this.FileLogsTab.Padding = new System.Windows.Forms.Padding(3);
             this.FileLogsTab.Size = new System.Drawing.Size(599, 429);
             this.FileLogsTab.TabIndex = 1;
             this.FileLogsTab.Text = "File Logs";
@@ -140,10 +138,10 @@ namespace OpenFK
             // fileLogs
             // 
             this.fileLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fileLogs.Location = new System.Drawing.Point(3, 3);
+            this.fileLogs.Location = new System.Drawing.Point(0, 0);
             this.fileLogs.Name = "fileLogs";
             this.fileLogs.ReadOnly = true;
-            this.fileLogs.Size = new System.Drawing.Size(593, 423);
+            this.fileLogs.Size = new System.Drawing.Size(599, 429);
             this.fileLogs.TabIndex = 0;
             this.fileLogs.Text = "";
             // 
@@ -152,7 +150,6 @@ namespace OpenFK
             this.incoming.Controls.Add(this.incomingLogs);
             this.incoming.Location = new System.Drawing.Point(4, 22);
             this.incoming.Name = "incoming";
-            this.incoming.Padding = new System.Windows.Forms.Padding(3);
             this.incoming.Size = new System.Drawing.Size(599, 429);
             this.incoming.TabIndex = 3;
             this.incoming.Text = "Incoming";
@@ -161,10 +158,10 @@ namespace OpenFK
             // incomingLogs
             // 
             this.incomingLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.incomingLogs.Location = new System.Drawing.Point(3, 3);
+            this.incomingLogs.Location = new System.Drawing.Point(0, 0);
             this.incomingLogs.Name = "incomingLogs";
             this.incomingLogs.ReadOnly = true;
-            this.incomingLogs.Size = new System.Drawing.Size(593, 423);
+            this.incomingLogs.Size = new System.Drawing.Size(599, 429);
             this.incomingLogs.TabIndex = 0;
             this.incomingLogs.Text = "";
             // 
@@ -193,7 +190,6 @@ namespace OpenFK
             this.CLogger.Controls.Add(this.CLoggerTabControl);
             this.CLogger.Location = new System.Drawing.Point(4, 22);
             this.CLogger.Name = "CLogger";
-            this.CLogger.Padding = new System.Windows.Forms.Padding(3);
             this.CLogger.Size = new System.Drawing.Size(599, 429);
             this.CLogger.TabIndex = 5;
             this.CLogger.Text = "CLogger";
@@ -209,10 +205,10 @@ namespace OpenFK
             this.CLoggerTabControl.Controls.Add(this.Error);
             this.CLoggerTabControl.Controls.Add(this.Fatal);
             this.CLoggerTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CLoggerTabControl.Location = new System.Drawing.Point(3, 3);
+            this.CLoggerTabControl.Location = new System.Drawing.Point(0, 0);
             this.CLoggerTabControl.Name = "CLoggerTabControl";
             this.CLoggerTabControl.SelectedIndex = 0;
-            this.CLoggerTabControl.Size = new System.Drawing.Size(593, 423);
+            this.CLoggerTabControl.Size = new System.Drawing.Size(599, 429);
             this.CLoggerTabControl.TabIndex = 0;
             // 
             // All
@@ -220,8 +216,7 @@ namespace OpenFK
             this.All.Controls.Add(this.CLoggerAll);
             this.All.Location = new System.Drawing.Point(4, 22);
             this.All.Name = "All";
-            this.All.Padding = new System.Windows.Forms.Padding(3);
-            this.All.Size = new System.Drawing.Size(585, 397);
+            this.All.Size = new System.Drawing.Size(591, 403);
             this.All.TabIndex = 0;
             this.All.Text = "All";
             this.All.UseVisualStyleBackColor = true;
@@ -229,10 +224,10 @@ namespace OpenFK
             // CLoggerAll
             // 
             this.CLoggerAll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CLoggerAll.Location = new System.Drawing.Point(3, 3);
+            this.CLoggerAll.Location = new System.Drawing.Point(0, 0);
             this.CLoggerAll.Name = "CLoggerAll";
             this.CLoggerAll.ReadOnly = true;
-            this.CLoggerAll.Size = new System.Drawing.Size(579, 391);
+            this.CLoggerAll.Size = new System.Drawing.Size(591, 403);
             this.CLoggerAll.TabIndex = 0;
             this.CLoggerAll.Text = "";
             // 
@@ -241,8 +236,7 @@ namespace OpenFK
             this.Trace.Controls.Add(this.CLoggerTrace);
             this.Trace.Location = new System.Drawing.Point(4, 22);
             this.Trace.Name = "Trace";
-            this.Trace.Padding = new System.Windows.Forms.Padding(3);
-            this.Trace.Size = new System.Drawing.Size(585, 397);
+            this.Trace.Size = new System.Drawing.Size(591, 403);
             this.Trace.TabIndex = 1;
             this.Trace.Text = "Trace";
             this.Trace.UseVisualStyleBackColor = true;
@@ -250,10 +244,10 @@ namespace OpenFK
             // CLoggerTrace
             // 
             this.CLoggerTrace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CLoggerTrace.Location = new System.Drawing.Point(3, 3);
+            this.CLoggerTrace.Location = new System.Drawing.Point(0, 0);
             this.CLoggerTrace.Name = "CLoggerTrace";
             this.CLoggerTrace.ReadOnly = true;
-            this.CLoggerTrace.Size = new System.Drawing.Size(579, 391);
+            this.CLoggerTrace.Size = new System.Drawing.Size(591, 403);
             this.CLoggerTrace.TabIndex = 1;
             this.CLoggerTrace.Text = "";
             // 
@@ -262,7 +256,7 @@ namespace OpenFK
             this.Debug.Controls.Add(this.CLoggerDebug);
             this.Debug.Location = new System.Drawing.Point(4, 22);
             this.Debug.Name = "Debug";
-            this.Debug.Size = new System.Drawing.Size(585, 397);
+            this.Debug.Size = new System.Drawing.Size(591, 403);
             this.Debug.TabIndex = 2;
             this.Debug.Text = "Debug";
             this.Debug.UseVisualStyleBackColor = true;
@@ -273,7 +267,7 @@ namespace OpenFK
             this.CLoggerDebug.Location = new System.Drawing.Point(0, 0);
             this.CLoggerDebug.Name = "CLoggerDebug";
             this.CLoggerDebug.ReadOnly = true;
-            this.CLoggerDebug.Size = new System.Drawing.Size(585, 397);
+            this.CLoggerDebug.Size = new System.Drawing.Size(591, 403);
             this.CLoggerDebug.TabIndex = 1;
             this.CLoggerDebug.Text = "";
             // 
@@ -282,7 +276,7 @@ namespace OpenFK
             this.Info.Controls.Add(this.CLoggerInfo);
             this.Info.Location = new System.Drawing.Point(4, 22);
             this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(585, 397);
+            this.Info.Size = new System.Drawing.Size(591, 403);
             this.Info.TabIndex = 3;
             this.Info.Text = "Info";
             this.Info.UseVisualStyleBackColor = true;
@@ -293,7 +287,7 @@ namespace OpenFK
             this.CLoggerInfo.Location = new System.Drawing.Point(0, 0);
             this.CLoggerInfo.Name = "CLoggerInfo";
             this.CLoggerInfo.ReadOnly = true;
-            this.CLoggerInfo.Size = new System.Drawing.Size(585, 397);
+            this.CLoggerInfo.Size = new System.Drawing.Size(591, 403);
             this.CLoggerInfo.TabIndex = 1;
             this.CLoggerInfo.Text = "";
             // 
@@ -302,7 +296,7 @@ namespace OpenFK
             this.Warning.Controls.Add(this.CLoggerWarning);
             this.Warning.Location = new System.Drawing.Point(4, 22);
             this.Warning.Name = "Warning";
-            this.Warning.Size = new System.Drawing.Size(585, 397);
+            this.Warning.Size = new System.Drawing.Size(591, 403);
             this.Warning.TabIndex = 4;
             this.Warning.Text = "Warning";
             this.Warning.UseVisualStyleBackColor = true;
@@ -313,7 +307,7 @@ namespace OpenFK
             this.CLoggerWarning.Location = new System.Drawing.Point(0, 0);
             this.CLoggerWarning.Name = "CLoggerWarning";
             this.CLoggerWarning.ReadOnly = true;
-            this.CLoggerWarning.Size = new System.Drawing.Size(585, 397);
+            this.CLoggerWarning.Size = new System.Drawing.Size(591, 403);
             this.CLoggerWarning.TabIndex = 1;
             this.CLoggerWarning.Text = "";
             // 
@@ -322,7 +316,7 @@ namespace OpenFK
             this.Error.Controls.Add(this.CLoggerError);
             this.Error.Location = new System.Drawing.Point(4, 22);
             this.Error.Name = "Error";
-            this.Error.Size = new System.Drawing.Size(585, 397);
+            this.Error.Size = new System.Drawing.Size(591, 403);
             this.Error.TabIndex = 5;
             this.Error.Text = "Error";
             this.Error.UseVisualStyleBackColor = true;
@@ -333,7 +327,7 @@ namespace OpenFK
             this.CLoggerError.Location = new System.Drawing.Point(0, 0);
             this.CLoggerError.Name = "CLoggerError";
             this.CLoggerError.ReadOnly = true;
-            this.CLoggerError.Size = new System.Drawing.Size(585, 397);
+            this.CLoggerError.Size = new System.Drawing.Size(591, 403);
             this.CLoggerError.TabIndex = 1;
             this.CLoggerError.Text = "";
             // 
@@ -342,7 +336,7 @@ namespace OpenFK
             this.Fatal.Controls.Add(this.CLoggerFatal);
             this.Fatal.Location = new System.Drawing.Point(4, 22);
             this.Fatal.Name = "Fatal";
-            this.Fatal.Size = new System.Drawing.Size(585, 397);
+            this.Fatal.Size = new System.Drawing.Size(591, 403);
             this.Fatal.TabIndex = 6;
             this.Fatal.Text = "Fatal";
             this.Fatal.UseVisualStyleBackColor = true;
@@ -353,7 +347,7 @@ namespace OpenFK
             this.CLoggerFatal.Location = new System.Drawing.Point(0, 0);
             this.CLoggerFatal.Name = "CLoggerFatal";
             this.CLoggerFatal.ReadOnly = true;
-            this.CLoggerFatal.Size = new System.Drawing.Size(585, 397);
+            this.CLoggerFatal.Size = new System.Drawing.Size(591, 403);
             this.CLoggerFatal.TabIndex = 1;
             this.CLoggerFatal.Text = "";
             // 
@@ -362,7 +356,6 @@ namespace OpenFK
             this.network.Controls.Add(this.NetworkTabs);
             this.network.Location = new System.Drawing.Point(4, 22);
             this.network.Name = "network";
-            this.network.Padding = new System.Windows.Forms.Padding(3);
             this.network.Size = new System.Drawing.Size(599, 429);
             this.network.TabIndex = 6;
             this.network.Text = "Network";
@@ -375,10 +368,10 @@ namespace OpenFK
             this.NetworkTabs.Controls.Add(this.NetworkPostTab);
             this.NetworkTabs.Controls.Add(this.NetworkCommandTab);
             this.NetworkTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NetworkTabs.Location = new System.Drawing.Point(3, 3);
+            this.NetworkTabs.Location = new System.Drawing.Point(0, 0);
             this.NetworkTabs.Name = "NetworkTabs";
             this.NetworkTabs.SelectedIndex = 0;
-            this.NetworkTabs.Size = new System.Drawing.Size(593, 423);
+            this.NetworkTabs.Size = new System.Drawing.Size(599, 429);
             this.NetworkTabs.TabIndex = 0;
             // 
             // NetworkAllTab
@@ -386,8 +379,7 @@ namespace OpenFK
             this.NetworkAllTab.Controls.Add(this.NetworkAllLogs);
             this.NetworkAllTab.Location = new System.Drawing.Point(4, 22);
             this.NetworkAllTab.Name = "NetworkAllTab";
-            this.NetworkAllTab.Padding = new System.Windows.Forms.Padding(3);
-            this.NetworkAllTab.Size = new System.Drawing.Size(585, 397);
+            this.NetworkAllTab.Size = new System.Drawing.Size(591, 403);
             this.NetworkAllTab.TabIndex = 0;
             this.NetworkAllTab.Text = "All";
             this.NetworkAllTab.UseVisualStyleBackColor = true;
@@ -395,10 +387,10 @@ namespace OpenFK
             // NetworkAllLogs
             // 
             this.NetworkAllLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NetworkAllLogs.Location = new System.Drawing.Point(3, 3);
+            this.NetworkAllLogs.Location = new System.Drawing.Point(0, 0);
             this.NetworkAllLogs.Name = "NetworkAllLogs";
             this.NetworkAllLogs.ReadOnly = true;
-            this.NetworkAllLogs.Size = new System.Drawing.Size(579, 391);
+            this.NetworkAllLogs.Size = new System.Drawing.Size(591, 403);
             this.NetworkAllLogs.TabIndex = 0;
             this.NetworkAllLogs.Text = "";
             // 
@@ -407,8 +399,7 @@ namespace OpenFK
             this.NetworkGetTab.Controls.Add(this.NetworkGetLogs);
             this.NetworkGetTab.Location = new System.Drawing.Point(4, 22);
             this.NetworkGetTab.Name = "NetworkGetTab";
-            this.NetworkGetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.NetworkGetTab.Size = new System.Drawing.Size(585, 397);
+            this.NetworkGetTab.Size = new System.Drawing.Size(591, 403);
             this.NetworkGetTab.TabIndex = 1;
             this.NetworkGetTab.Text = "GET";
             this.NetworkGetTab.UseVisualStyleBackColor = true;
@@ -416,10 +407,10 @@ namespace OpenFK
             // NetworkGetLogs
             // 
             this.NetworkGetLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NetworkGetLogs.Location = new System.Drawing.Point(3, 3);
+            this.NetworkGetLogs.Location = new System.Drawing.Point(0, 0);
             this.NetworkGetLogs.Name = "NetworkGetLogs";
             this.NetworkGetLogs.ReadOnly = true;
-            this.NetworkGetLogs.Size = new System.Drawing.Size(579, 391);
+            this.NetworkGetLogs.Size = new System.Drawing.Size(591, 403);
             this.NetworkGetLogs.TabIndex = 1;
             this.NetworkGetLogs.Text = "";
             // 
@@ -428,7 +419,7 @@ namespace OpenFK
             this.NetworkPostTab.Controls.Add(this.NetworkPostLogs);
             this.NetworkPostTab.Location = new System.Drawing.Point(4, 22);
             this.NetworkPostTab.Name = "NetworkPostTab";
-            this.NetworkPostTab.Size = new System.Drawing.Size(585, 397);
+            this.NetworkPostTab.Size = new System.Drawing.Size(591, 403);
             this.NetworkPostTab.TabIndex = 2;
             this.NetworkPostTab.Text = "POST";
             this.NetworkPostTab.UseVisualStyleBackColor = true;
@@ -439,7 +430,7 @@ namespace OpenFK
             this.NetworkPostLogs.Location = new System.Drawing.Point(0, 0);
             this.NetworkPostLogs.Name = "NetworkPostLogs";
             this.NetworkPostLogs.ReadOnly = true;
-            this.NetworkPostLogs.Size = new System.Drawing.Size(585, 397);
+            this.NetworkPostLogs.Size = new System.Drawing.Size(591, 403);
             this.NetworkPostLogs.TabIndex = 1;
             this.NetworkPostLogs.Text = "";
             // 
@@ -448,8 +439,7 @@ namespace OpenFK
             this.NetworkCommandTab.Controls.Add(this.NetworkCommandLogs);
             this.NetworkCommandTab.Location = new System.Drawing.Point(4, 22);
             this.NetworkCommandTab.Name = "NetworkCommandTab";
-            this.NetworkCommandTab.Padding = new System.Windows.Forms.Padding(3);
-            this.NetworkCommandTab.Size = new System.Drawing.Size(585, 397);
+            this.NetworkCommandTab.Size = new System.Drawing.Size(591, 403);
             this.NetworkCommandTab.TabIndex = 3;
             this.NetworkCommandTab.Text = "NetCommands";
             this.NetworkCommandTab.UseVisualStyleBackColor = true;
@@ -457,10 +447,10 @@ namespace OpenFK
             // NetworkCommandLogs
             // 
             this.NetworkCommandLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NetworkCommandLogs.Location = new System.Drawing.Point(3, 3);
+            this.NetworkCommandLogs.Location = new System.Drawing.Point(0, 0);
             this.NetworkCommandLogs.Name = "NetworkCommandLogs";
             this.NetworkCommandLogs.ReadOnly = true;
-            this.NetworkCommandLogs.Size = new System.Drawing.Size(579, 391);
+            this.NetworkCommandLogs.Size = new System.Drawing.Size(591, 403);
             this.NetworkCommandLogs.TabIndex = 2;
             this.NetworkCommandLogs.Text = "";
             // 

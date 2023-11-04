@@ -78,14 +78,10 @@ namespace OpenFK
 
         static string CalculateMD5(string filename) //Generates the MD5 hash.
         {
-            using (var md5 = MD5.Create())
-            {
-                using (var stream = File.OpenRead(filename)) 
-                {
-                    var hash = md5.ComputeHash(stream); //Computes the MD5 hash of the swf.
-                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant(); //Converts the hash to a readable string to compare.
-                }
-            }
+            using var md5 = MD5.Create();
+            using var stream = File.OpenRead(filename);
+            var hash = md5.ComputeHash(stream); //Computes the MD5 hash of the swf.
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant(); //Converts the hash to a readable string to compare.
         }
     }
 }

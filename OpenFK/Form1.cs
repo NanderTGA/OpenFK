@@ -1,4 +1,4 @@
-using AxShockwaveFlashObjects;
+﻿using AxShockwaveFlashObjects;
 using DiscordRPC;
 using Microsoft.Win32;
 using OpenFK.OFK.Common;
@@ -77,6 +77,7 @@ namespace OpenFK
         public XmlDocument userData;
         public DiscordRpcClient client;
         private FileSystemWatcher watcher;
+        private Process FSGUI_process;
 
         public Form1(string[] args)
         {
@@ -145,6 +146,8 @@ namespace OpenFK
                 watcher.Changed += OnChanged;
                 watcher.SynchronizingObject = AS2Container;
                 watcher.EnableRaisingEvents = true;
+
+                if (Settings.Default.startFSGUI == true) StartFSGUI();
             }
             //End of customF Initialization
 
@@ -553,6 +556,11 @@ namespace OpenFK
                             updatescript.UseShellExecute = true;
                             var updateprocess = Process.Start(updatescript);
                         }
+                        if (Settings.Default.customF && Settings.Default.closeFSGUI && FSGUI_process != null)
+                        {
+                            FSGUI_process.EnableRaisingEvents = false;
+                            FSGUI_process.Kill();
+                        }
                         Application.Exit();
                     }
                 }
@@ -562,6 +570,11 @@ namespace OpenFK
                     ProcessStartInfo updatescript = new ProcessStartInfo(Directory.GetCurrentDirectory() + @"\update.bat");
                     updatescript.UseShellExecute = true;
                     var updateprocess = Process.Start(updatescript);
+                }
+                if (Settings.Default.customF && Settings.Default.closeFSGUI && FSGUI_process != null)
+                {
+                    FSGUI_process.EnableRaisingEvents = false;
+                    FSGUI_process.Kill();
                 }
                 Application.Exit(); //Closes OpenFK
                 LogManager.LogGeneral("[OpenFK] Radicaclose was called");
@@ -843,9 +856,9 @@ namespace OpenFK
             //FSGUI
             //
 
-            if (e.args.Contains("<fsgui ")) //fsgui
+            if (e.args.Contains("<fsgui ") && Settings.Default.startFSGUI == false)
             {
-                //Open FSGUI
+                StartFSGUI();
             }
 
             //
@@ -878,6 +891,11 @@ namespace OpenFK
                 {
                     Process process = Process.GetProcessesByName("MegaByte")[0];
                     process.Kill();
+                }
+                if (Settings.Default.customF && Settings.Default.closeFSGUI && FSGUI_process != null)
+                {
+                    FSGUI_process.EnableRaisingEvents = false;
+                    FSGUI_process.Kill();
                 }
                 Application.Exit(); //Closes OpenFK
             }
@@ -1165,5 +1183,28 @@ namespace OpenFK
         //
         //END OF HTTP GET
         //
+
+        public void StartFSGUI(object sender = null, EventArgs e = null)
+        {
+            ProcessStartInfo FSGUI_processStartInfo = new ProcessStartInfo
+            {
+                FileName = Directory.GetCurrentDirectory() + @"\FunkeySelectorGUI.exe",
+                UseShellExecute = false,
+                WindowStyle = ProcessWindowStyle.Minimized // this doesn't work for whatever reason
+            };
+
+            FSGUI_process = new Process
+            {
+                StartInfo = FSGUI_processStartInfo
+            };
+
+            if (Settings.Default.keepFSGUI)
+            {
+                FSGUI_process.EnableRaisingEvents = true;
+                FSGUI_process.Exited += StartFSGUI;
+            }
+
+            FSGUI_process.Start();
+        }
     }
 }

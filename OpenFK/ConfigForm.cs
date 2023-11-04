@@ -20,7 +20,10 @@ namespace OpenFK
             HTTPBox2.Text = Settings.Default.HTTPHost2;
             TCPHostBox.Text = Settings.Default.TCPHost;
             TCPPortBox.Text = Settings.Default.TCPPort;
-            label8.Text = "OpenFK v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            StartFSGUIToggle.Checked = Settings.Default.startFSGUI;
+            KeepFSGUIToggle.Checked = Settings.Default.keepFSGUI;
+            CloseFSGUIToggle.Checked = Settings.Default.closeFSGUI;
+            OpenFKVersionLabel.Text = "OpenFK v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             UpdateTextboxes();
         }
 
@@ -77,7 +80,7 @@ namespace OpenFK
             UpdateTextboxes();
         }
 
-        void UpdateTextboxes()
+        private void UpdateTextboxes()
         {
             if (Settings.Default.IsOnline)
             {
@@ -93,6 +96,26 @@ namespace OpenFK
                 TCPHostBox.Enabled = false;
                 TCPPortBox.Enabled = false;
             }
+        }
+
+        private void StartFSGUIToggle_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.startFSGUI = StartFSGUIToggle.Checked;
+            KeepFSGUIToggle.Checked = StartFSGUIToggle.Checked;
+            KeepFSGUIToggle.Enabled = StartFSGUIToggle.Checked;
+            Settings.Default.Save();
+        }
+
+        private void KeepFSGUIToggle_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.keepFSGUI = KeepFSGUIToggle.Checked;
+            Settings.Default.Save();
+        }
+
+        private void CloseFSGUIToggle_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.closeFSGUI = CloseFSGUIToggle.Checked;
+            Settings.Default.Save();
         }
     }
 }

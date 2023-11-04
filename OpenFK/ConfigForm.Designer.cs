@@ -36,21 +36,25 @@
             this.ExitButton = new System.Windows.Forms.Button();
             this.RDFToggle = new System.Windows.Forms.CheckBox();
             this.USBToggle = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.GraphicsSettingsLabel = new System.Windows.Forms.Label();
+            this.QualityLabel = new System.Windows.Forms.Label();
+            this.ScalingLabel = new System.Windows.Forms.Label();
+            this.GameSettingsLabel = new System.Windows.Forms.Label();
             this.OnlineToggle = new System.Windows.Forms.CheckBox();
             this.HTTPBox1 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.HTTPHost1Label = new System.Windows.Forms.Label();
+            this.TCPHostLabel = new System.Windows.Forms.Label();
             this.TCPHostBox = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.OpenFKVersionLabel = new System.Windows.Forms.Label();
+            this.TCPPortLabel = new System.Windows.Forms.Label();
             this.TCPPortBox = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.HTTPHost2Label = new System.Windows.Forms.Label();
             this.HTTPBox2 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.NetworkSettingsLabel = new System.Windows.Forms.Label();
+            this.FSGUISettingsLabel = new System.Windows.Forms.Label();
+            this.StartFSGUIToggle = new System.Windows.Forms.CheckBox();
+            this.KeepFSGUIToggle = new System.Windows.Forms.CheckBox();
+            this.CloseFSGUIToggle = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // QualityCB
@@ -66,14 +70,14 @@
             this.QualityCB.TabIndex = 0;
             this.QualityCB.SelectedIndexChanged += new System.EventHandler(this.QualityCB_SelectedIndexChanged);
             // 
-            // customFtoggle
+            // CustomFtoggle
             // 
             this.CustomFtoggle.AutoSize = true;
             this.CustomFtoggle.Location = new System.Drawing.Point(34, 69);
-            this.CustomFtoggle.Name = "customFtoggle";
-            this.CustomFtoggle.Size = new System.Drawing.Size(104, 17);
+            this.CustomFtoggle.Name = "CustomFtoggle";
+            this.CustomFtoggle.Size = new System.Drawing.Size(107, 17);
             this.CustomFtoggle.TabIndex = 1;
-            this.CustomFtoggle.Text = "Customf Support";
+            this.CustomFtoggle.Text = "CustomF Support";
             this.CustomFtoggle.UseVisualStyleBackColor = true;
             this.CustomFtoggle.CheckedChanged += new System.EventHandler(this.CustomFtoggle_CheckedChanged);
             // 
@@ -104,7 +108,7 @@
             // 
             // ExitButton
             // 
-            this.ExitButton.Location = new System.Drawing.Point(248, 283);
+            this.ExitButton.Location = new System.Drawing.Point(259, 401);
             this.ExitButton.Name = "ExitButton";
             this.ExitButton.Size = new System.Drawing.Size(101, 23);
             this.ExitButton.TabIndex = 4;
@@ -112,11 +116,11 @@
             this.ExitButton.UseVisualStyleBackColor = true;
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
-            // rdfToggle
+            // RDFToggle
             // 
             this.RDFToggle.AutoSize = true;
             this.RDFToggle.Location = new System.Drawing.Point(34, 46);
-            this.RDFToggle.Name = "rdfToggle";
+            this.RDFToggle.Name = "RDFToggle";
             this.RDFToggle.Size = new System.Drawing.Size(89, 17);
             this.RDFToggle.TabIndex = 7;
             this.RDFToggle.Text = "RDF Loading";
@@ -134,45 +138,45 @@
             this.USBToggle.UseVisualStyleBackColor = true;
             this.USBToggle.CheckedChanged += new System.EventHandler(this.USBToggle_CheckedChanged);
             // 
-            // label1
+            // GraphicsSettingsLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(199, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(130, 16);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Graphics Settings";
+            this.GraphicsSettingsLabel.AutoSize = true;
+            this.GraphicsSettingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GraphicsSettingsLabel.Location = new System.Drawing.Point(199, 22);
+            this.GraphicsSettingsLabel.Name = "GraphicsSettingsLabel";
+            this.GraphicsSettingsLabel.Size = new System.Drawing.Size(130, 16);
+            this.GraphicsSettingsLabel.TabIndex = 9;
+            this.GraphicsSettingsLabel.Text = "Graphics Settings";
             // 
-            // label2
+            // QualityLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(199, 48);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(39, 13);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Quality";
+            this.QualityLabel.AutoSize = true;
+            this.QualityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.QualityLabel.Location = new System.Drawing.Point(199, 48);
+            this.QualityLabel.Name = "QualityLabel";
+            this.QualityLabel.Size = new System.Drawing.Size(39, 13);
+            this.QualityLabel.TabIndex = 10;
+            this.QualityLabel.Text = "Quality";
             // 
-            // label3
+            // ScalingLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(199, 88);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(42, 13);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "Scaling";
+            this.ScalingLabel.AutoSize = true;
+            this.ScalingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ScalingLabel.Location = new System.Drawing.Point(199, 88);
+            this.ScalingLabel.Name = "ScalingLabel";
+            this.ScalingLabel.Size = new System.Drawing.Size(42, 13);
+            this.ScalingLabel.TabIndex = 11;
+            this.ScalingLabel.Text = "Scaling";
             // 
-            // label4
+            // GameSettingsLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(34, 22);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(109, 16);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "Game Settings";
+            this.GameSettingsLabel.AutoSize = true;
+            this.GameSettingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GameSettingsLabel.Location = new System.Drawing.Point(34, 22);
+            this.GameSettingsLabel.Name = "GameSettingsLabel";
+            this.GameSettingsLabel.Size = new System.Drawing.Size(109, 16);
+            this.GameSettingsLabel.TabIndex = 12;
+            this.GameSettingsLabel.Text = "Game Settings";
             // 
             // OnlineToggle
             // 
@@ -193,25 +197,25 @@
             this.HTTPBox1.TabIndex = 15;
             this.HTTPBox1.Text = "localhost";
             // 
-            // label6
+            // HTTPHost1Label
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(75, 202);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(70, 13);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "HTTP Host 1";
+            this.HTTPHost1Label.AutoSize = true;
+            this.HTTPHost1Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HTTPHost1Label.Location = new System.Drawing.Point(75, 202);
+            this.HTTPHost1Label.Name = "HTTPHost1Label";
+            this.HTTPHost1Label.Size = new System.Drawing.Size(70, 13);
+            this.HTTPHost1Label.TabIndex = 16;
+            this.HTTPHost1Label.Text = "HTTP Host 1";
             // 
-            // label7
+            // TCPHostLabel
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(73, 241);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 13);
-            this.label7.TabIndex = 17;
-            this.label7.Text = "TCP Host";
+            this.TCPHostLabel.AutoSize = true;
+            this.TCPHostLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TCPHostLabel.Location = new System.Drawing.Point(73, 241);
+            this.TCPHostLabel.Name = "TCPHostLabel";
+            this.TCPHostLabel.Size = new System.Drawing.Size(53, 13);
+            this.TCPHostLabel.TabIndex = 17;
+            this.TCPHostLabel.Text = "TCP Host";
             // 
             // TCPHostBox
             // 
@@ -221,24 +225,24 @@
             this.TCPHostBox.TabIndex = 18;
             this.TCPHostBox.Text = "localhost";
             // 
-            // label8
+            // OpenFKVersionLabel
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 293);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(88, 13);
-            this.label8.TabIndex = 19;
-            this.label8.Text = "OpenFK v0.0.0.0";
+            this.OpenFKVersionLabel.AutoSize = true;
+            this.OpenFKVersionLabel.Location = new System.Drawing.Point(12, 411);
+            this.OpenFKVersionLabel.Name = "OpenFKVersionLabel";
+            this.OpenFKVersionLabel.Size = new System.Drawing.Size(88, 13);
+            this.OpenFKVersionLabel.TabIndex = 19;
+            this.OpenFKVersionLabel.Text = "OpenFK v0.0.0.0";
             // 
-            // label9
+            // TCPPortLabel
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(184, 241);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(50, 13);
-            this.label9.TabIndex = 20;
-            this.label9.Text = "TCP Port";
+            this.TCPPortLabel.AutoSize = true;
+            this.TCPPortLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TCPPortLabel.Location = new System.Drawing.Point(184, 241);
+            this.TCPPortLabel.Name = "TCPPortLabel";
+            this.TCPPortLabel.Size = new System.Drawing.Size(50, 13);
+            this.TCPPortLabel.TabIndex = 20;
+            this.TCPPortLabel.Text = "TCP Port";
             // 
             // TCPPortBox
             // 
@@ -248,15 +252,15 @@
             this.TCPPortBox.TabIndex = 21;
             this.TCPPortBox.Text = "80";
             // 
-            // label10
+            // HTTPHost2Label
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(184, 202);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(70, 13);
-            this.label10.TabIndex = 23;
-            this.label10.Text = "HTTP Host 2";
+            this.HTTPHost2Label.AutoSize = true;
+            this.HTTPHost2Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HTTPHost2Label.Location = new System.Drawing.Point(184, 202);
+            this.HTTPHost2Label.Name = "HTTPHost2Label";
+            this.HTTPHost2Label.Size = new System.Drawing.Size(70, 13);
+            this.HTTPHost2Label.TabIndex = 23;
+            this.HTTPHost2Label.Text = "HTTP Host 2";
             // 
             // HTTPBox2
             // 
@@ -266,36 +270,85 @@
             this.HTTPBox2.TabIndex = 22;
             this.HTTPBox2.Text = "localhost";
             // 
-            // label5
+            // NetworkSettingsLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(118, 152);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(124, 16);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Network Settings";
+            this.NetworkSettingsLabel.AutoSize = true;
+            this.NetworkSettingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NetworkSettingsLabel.Location = new System.Drawing.Point(118, 152);
+            this.NetworkSettingsLabel.Name = "NetworkSettingsLabel";
+            this.NetworkSettingsLabel.Size = new System.Drawing.Size(124, 16);
+            this.NetworkSettingsLabel.TabIndex = 13;
+            this.NetworkSettingsLabel.Text = "Network Settings";
+            // 
+            // FSGUISettingsLabel
+            // 
+            this.FSGUISettingsLabel.AutoSize = true;
+            this.FSGUISettingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FSGUISettingsLabel.Location = new System.Drawing.Point(82, 295);
+            this.FSGUISettingsLabel.Name = "FSGUISettingsLabel";
+            this.FSGUISettingsLabel.Size = new System.Drawing.Size(202, 16);
+            this.FSGUISettingsLabel.TabIndex = 24;
+            this.FSGUISettingsLabel.Text = "FunkeySelectorGUI Settings";
+            this.FSGUISettingsLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // StartFSGUIToggle
+            // 
+            this.StartFSGUIToggle.AutoSize = true;
+            this.StartFSGUIToggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StartFSGUIToggle.Location = new System.Drawing.Point(8, 323);
+            this.StartFSGUIToggle.Name = "StartFSGUIToggle";
+            this.StartFSGUIToggle.Size = new System.Drawing.Size(365, 17);
+            this.StartFSGUIToggle.TabIndex = 25;
+            this.StartFSGUIToggle.Text = "Start FunkeySelectorGUI when starting OpenFK and CustomF is enabled";
+            this.StartFSGUIToggle.UseVisualStyleBackColor = true;
+            this.StartFSGUIToggle.CheckedChanged += new System.EventHandler(this.StartFSGUIToggle_CheckedChanged);
+            // 
+            // KeepFSGUIToggle
+            // 
+            this.KeepFSGUIToggle.AutoSize = true;
+            this.KeepFSGUIToggle.Location = new System.Drawing.Point(8, 346);
+            this.KeepFSGUIToggle.Name = "KeepFSGUIToggle";
+            this.KeepFSGUIToggle.Size = new System.Drawing.Size(290, 17);
+            this.KeepFSGUIToggle.TabIndex = 26;
+            this.KeepFSGUIToggle.Text = "Always keep an instance of FunkeySelectorGUI running";
+            this.KeepFSGUIToggle.UseVisualStyleBackColor = true;
+            this.KeepFSGUIToggle.CheckedChanged += new System.EventHandler(this.KeepFSGUIToggle_CheckedChanged);
+            // 
+            // CloseFSGUIToggle
+            // 
+            this.CloseFSGUIToggle.AutoSize = true;
+            this.CloseFSGUIToggle.Location = new System.Drawing.Point(8, 369);
+            this.CloseFSGUIToggle.Name = "CloseFSGUIToggle";
+            this.CloseFSGUIToggle.Size = new System.Drawing.Size(255, 17);
+            this.CloseFSGUIToggle.TabIndex = 27;
+            this.CloseFSGUIToggle.Text = "Close FunkeySelectorGUI when closing OpenFK";
+            this.CloseFSGUIToggle.UseVisualStyleBackColor = true;
+            this.CloseFSGUIToggle.CheckedChanged += new System.EventHandler(this.CloseFSGUIToggle_CheckedChanged);
             // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(361, 311);
-            this.Controls.Add(this.label10);
+            this.ClientSize = new System.Drawing.Size(372, 431);
+            this.Controls.Add(this.CloseFSGUIToggle);
+            this.Controls.Add(this.KeepFSGUIToggle);
+            this.Controls.Add(this.StartFSGUIToggle);
+            this.Controls.Add(this.FSGUISettingsLabel);
+            this.Controls.Add(this.HTTPHost2Label);
             this.Controls.Add(this.HTTPBox2);
             this.Controls.Add(this.TCPPortBox);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label8);
+            this.Controls.Add(this.TCPPortLabel);
+            this.Controls.Add(this.OpenFKVersionLabel);
             this.Controls.Add(this.TCPHostBox);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.TCPHostLabel);
+            this.Controls.Add(this.HTTPHost1Label);
             this.Controls.Add(this.HTTPBox1);
             this.Controls.Add(this.OnlineToggle);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.NetworkSettingsLabel);
+            this.Controls.Add(this.GameSettingsLabel);
+            this.Controls.Add(this.ScalingLabel);
+            this.Controls.Add(this.QualityLabel);
+            this.Controls.Add(this.GraphicsSettingsLabel);
             this.Controls.Add(this.USBToggle);
             this.Controls.Add(this.RDFToggle);
             this.Controls.Add(this.ExitButton);
@@ -322,20 +375,24 @@
         private System.Windows.Forms.Button ExitButton;
         private System.Windows.Forms.CheckBox RDFToggle;
         private System.Windows.Forms.CheckBox USBToggle;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label GraphicsSettingsLabel;
+        private System.Windows.Forms.Label QualityLabel;
+        private System.Windows.Forms.Label ScalingLabel;
+        private System.Windows.Forms.Label GameSettingsLabel;
         private System.Windows.Forms.CheckBox OnlineToggle;
         private System.Windows.Forms.TextBox HTTPBox1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label HTTPHost1Label;
+        private System.Windows.Forms.Label TCPHostLabel;
         private System.Windows.Forms.TextBox TCPHostBox;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label OpenFKVersionLabel;
+        private System.Windows.Forms.Label TCPPortLabel;
         private System.Windows.Forms.TextBox TCPPortBox;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label HTTPHost2Label;
         private System.Windows.Forms.TextBox HTTPBox2;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label NetworkSettingsLabel;
+        private System.Windows.Forms.Label FSGUISettingsLabel;
+        private System.Windows.Forms.CheckBox StartFSGUIToggle;
+        private System.Windows.Forms.CheckBox KeepFSGUIToggle;
+        private System.Windows.Forms.CheckBox CloseFSGUIToggle;
     }
 }

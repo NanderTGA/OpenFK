@@ -35,5 +35,14 @@
     <Setting Name="TCPPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">80</Value>
     </Setting>
+    <Setting Name="startFSGUI" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="keepFSGUI" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="closeFSGUI" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

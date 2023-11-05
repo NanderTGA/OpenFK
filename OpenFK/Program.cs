@@ -1,16 +1,20 @@
-﻿using OpenFK.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using OpenFK.OFK.Common;
+using OpenFK.Properties;
 
 namespace OpenFK
 {
     static class Program
     {
+        public const string feelFreeToAskForHelp = "If you need help, feel free to ask for help in the U.B. Funkeys Discord server or on the subreddit (preferably the Discord server).";
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -28,10 +32,30 @@ namespace OpenFK
                 return;
             }
 
+            if (
+                Environment.Is64BitProcess != Environment.Is64BitOperatingSystem &&
+                MessageBox.Show(
+                    "You are using a 32-bit version of OpenFK on a 64-bit operating system! We highly recommend you to use the 64-bit version instead. Do you want to download the 64-bit version?",
+                    "Wrong OpenFK version",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                ) == DialogResult.Yes
+            )
+            {
+                // TODO: make use of the update feature to download & install it ourselves, see #8
+                Process.Start("https://github.com/GittyMac/OpenFK/releases/latest");
+                _ = MessageBox.Show(
+                    $"Please download the latest version labeled x64. {feelFreeToAskForHelp}",
+                    "OpenFK",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+
             if (!File.Exists("Flash.ocx"))
             {
                 bool downloadOCX = MessageBox.Show(
-                    "Flash.ocx could not be found! Do you want to fetch a compatible OCX? Pressing no will close openFK.",
+                    "Flash.ocx could not be found! Do you want to fetch a compatible OCX? Pressing no will close OpenFK.",
                     "Flash.ocx not found",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Error
@@ -61,15 +85,45 @@ namespace OpenFK
                 return;
             }
             
+            if (!File.Exists("Main.swf"))
+            {
+                MessageBox.Show(
+                    $"Could not find Main.swf! Did you put OpenFK in the right location? {feelFreeToAskForHelp}",
+                    "OpenFK",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                Application.Exit();
+                return;
+            }
+
             try
             {
                 Application.Run(new Form1(args));
             }
             catch
             {
+                bool? flashOCXIs64Bit = ArchitectureUtils.UnmanagedDllIs64Bit("Flash.ocx");
+                string errorInformation = "";
+
+                if (flashOCXIs64Bit == null) errorInformation = " This might be happening because of a 64 bit OCX running on a 32 bit OpenFK or vice versa (NOTE: our checks could not draw any conclusions).";
+                else if (
+                    flashOCXIs64Bit != Environment.Is64BitProcess &&
+                    MessageBox.Show(
+                        $"There was an error starting the game! Our checks have concluded this is happening because of a 64 bit OCX running on a 32 bit OpenFK or vice versa. Do you want to fetch a compatible OCX?",
+                        "OpenFK has crashed!",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Exclamation
+                    ) == DialogResult.Yes
+                )
+                {
+                    FetchOCX();
+                    return;
+                }
+
                 _ = MessageBox.Show(
-                    "There was an error starting the game! This could happen because of a 64 bit OCX running on a 32 bit OpenFK. This could also happen for any other reason.",
-                    "OpenFK",
+                    $"There was an error starting the game!{errorInformation} {feelFreeToAskForHelp}",
+                    "OpenFK has crashed!",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
@@ -87,16 +141,34 @@ namespace OpenFK
 
         private static void FetchOCX()
         {
-            File.WriteAllText("FetchOCX.bat", Resources.FetchOCX);
+            Directory.CreateDirectory("tempdl");
+            File.WriteAllText("tempdl\\FetchOCX.bat", Resources.FetchOCX);
 
-            ProcessStartInfo fetchOCXProcessStartInfo = new ProcessStartInfo("FetchOCX.bat")
+            string tempdlPath = Path.Combine(Environment.CurrentDirectory, "tempdl");
+
+            using (WebClient client = new())
             {
-                UseShellExecute = false
+                client.DownloadFile(
+                    "http://download.windowsupdate.com/c/msdownload/update/software/secu/2019/06/windows10.0-kb4503308-x64_b6478017674279c8ba4f06e60fc3bab04ed7ae02.msu",
+                    Path.Combine(tempdlPath, "update.msu")
+                );
+            }
+
+            ProcessStartInfo fetchOCXProcessStartInfo = new(Path.Combine(tempdlPath, "FetchOCX.bat"))
+            {
+                UseShellExecute = false,
+                WorkingDirectory = tempdlPath
             };
             Process fetchOCXProcess = Process.Start(fetchOCXProcessStartInfo);
             fetchOCXProcess.WaitForExit();
 
-            File.Delete("FetchOCX.bat");
+            string flashOCXPath = Environment.Is64BitProcess ?
+                @"tempdl\amd64_adobe-flash-for-windows_31bf3856ad364e35_10.0.18362.172_none_815470a5fb446c4e\flash.ocx" :
+                @"tempdl\wow64_adobe-flash-for-windows_31bf3856ad364e35_10.0.18362.172_none_8ba91af82fa52e49\flash.ocx";
+            File.Copy(flashOCXPath, "Flash.ocx");
+
+            Directory.Delete("tempdl", true);
+
             Application.Restart();
         }
     }

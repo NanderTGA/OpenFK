@@ -1,17 +1,22 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
 using OpenFK.OFK.Net;
+using OpenFK.OFK.Common;
 using OpenFK.Properties;
 
 namespace OpenFK
 {
     static class Program
     {
+        public const string feelFreeToAskForHelp = "If you need help, feel free to ask for help in the U.B. Funkeys Discord server or on the subreddit (preferably the Discord server).";
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -45,7 +50,7 @@ namespace OpenFK
             if (!File.Exists("Flash.ocx"))
             {
                 bool downloadOCX = MessageBox.Show(
-                    "Flash.ocx could not be found! Do you want to fetch a compatible OCX? Pressing no will close openFK.",
+                    "Flash.ocx could not be found! Do you want to fetch a compatible OCX? Pressing no will close OpenFK.",
                     "Flash.ocx not found",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Error
@@ -75,15 +80,44 @@ namespace OpenFK
                 return;
             }
             
+            if (!File.Exists("Main.swf"))
+            {
+                MessageBox.Show(
+                    $"Could not find Main.swf! Did you put OpenFK in the right location? {feelFreeToAskForHelp}",
+                    "OpenFK",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                Application.Exit();
+                return;
+            }
+
             try
             {
                 Application.Run(new GameForm(args));
             }
             catch
             {
+                bool? flashOCXIs64Bit = ArchitectureUtils.UnmanagedDllIs64Bit("Flash.ocx");
+                string errorInformation = "";
+
+                if (
+                    flashOCXIs64Bit != Environment.Is64BitProcess &&
+                    MessageBox.Show(
+                        $"There was an error starting the game! This is very likely happening because an incompatible OCX. Do you want to fetch a compatible OCX?",
+                        "OpenFK has crashed!",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Exclamation
+                    ) == DialogResult.Yes
+                )
+                {
+                    FetchOCX();
+                    return;
+                }
+
                 _ = MessageBox.Show(
-                    "There was an error starting the game! This could happen because of a 64 bit OCX running on a 32 bit OpenFK. This could also happen for any other reason.",
-                    "OpenFK",
+                    $"There was an error starting the game!{errorInformation} {feelFreeToAskForHelp}",
+                    "OpenFK has crashed!",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
@@ -101,16 +135,27 @@ namespace OpenFK
 
         private static void FetchOCX()
         {
-            File.WriteAllText("FetchOCX.bat", Resources.FetchOCX);
+            Directory.CreateDirectory("tempdl");
+            string tempdlPath = Path.Combine(Environment.CurrentDirectory, "tempdl");
 
-            ProcessStartInfo fetchOCXProcessStartInfo = new ProcessStartInfo("FetchOCX.bat")
+            using (WebClient client = new())
             {
-                UseShellExecute = false
-            };
-            Process fetchOCXProcess = Process.Start(fetchOCXProcessStartInfo);
-            fetchOCXProcess.WaitForExit();
+                client.DownloadFile(
+                    "http://download.windowsupdate.com/c/msdownload/update/software/secu/2019/06/windows10.0-kb4503308-x64_b6478017674279c8ba4f06e60fc3bab04ed7ae02.msu",
+                    Path.Combine(tempdlPath, "update.msu")
+                );
+            }
 
-            File.Delete("FetchOCX.bat");
+            const string cabFile = "Windows10.0-KB4503308-x64.cab";
+            ExtractFilesFromArchive(tempdlPath, "update.msu", cabFile);
+            ExtractFilesFromArchive(tempdlPath, cabFile, "flash.ocx");
+
+            string flashOCXPath = Environment.Is64BitProcess ?
+                @"tempdl\amd64_adobe-flash-for-windows_31bf3856ad364e35_10.0.18362.172_none_815470a5fb446c4e\flash.ocx" :
+                @"tempdl\wow64_adobe-flash-for-windows_31bf3856ad364e35_10.0.18362.172_none_8ba91af82fa52e49\flash.ocx";
+            File.Copy(flashOCXPath, "Flash.ocx");
+
+            Directory.Delete("tempdl", true);
             Application.Restart();
         }
     }

@@ -39,12 +39,6 @@ namespace OpenFK
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (!File.Exists(Directory.GetCurrentDirectory() + @"\Main.swf"))
-            {
-                MessageBox.Show("Could not find Main.swf!", "OpenFK", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-            }
-
             if (Settings.Default.RPC == true)
             {
                 RichPresenceManager.InitRPC();

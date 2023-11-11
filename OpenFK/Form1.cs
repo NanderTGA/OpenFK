@@ -1,4 +1,4 @@
-﻿using AxShockwaveFlashObjects;
+using AxShockwaveFlashObjects;
 using DiscordRPC;
 using Microsoft.Win32;
 using OpenFK.OFK.Common;
@@ -239,7 +239,7 @@ namespace OpenFK
                 {
                     usbBittyID = s;
                     LogManager.LogGeneral("[Bitty] USB bitty - " + s);
-                    setBitty(s);
+                    SetBitty(s);
                 }
             }
             catch
@@ -268,7 +268,7 @@ namespace OpenFK
         {
             try //Runs a loop to keep reading until the file is not being saved.
             {
-                setBitty(File.ReadAllText(Directory.GetCurrentDirectory() + @"\customF.txt").Remove(0, 14));
+                SetBitty(File.ReadAllText(Directory.GetCurrentDirectory() + @"\customF.txt").Remove(0, 14));
             }
             catch
             {
@@ -1036,30 +1036,21 @@ namespace OpenFK
         //SET BITTY
         //
 
-        void setBitty(string localBittyID)
+        void SetBitty(string localBittyID)
         {
-            if(bittyID != localBittyID)
-            {
-                setVar(@"<bitybyte id=""" + localBittyID + "00000000" + @""" />");
-                bittyID = localBittyID;
-                currentBitty = localBittyID.ToLower();
-                if (Settings.Default.RPC == true)
-                {
-                    try
-                    {
-                        XmlNodeList nodes = bittyData.SelectNodes("//funkey[@id='" + localBittyID + "']");
-                        foreach (XmlNode xn in nodes)
-                        {
-                            currentBittyName = xn.Attributes["name"].Value;
-                        }
-                        setRP(currentWorld, currentActivity, currentBitty, currentBittyName);
-                    }
-                    catch
-                    {
+            if (bittyID == localBittyID) return;
 
-                    }
-                }
-            }
+            setVar(@$"<bitybyte id=""{localBittyID}00000000"" />");
+            bittyID = localBittyID;
+            currentBitty = localBittyID.ToLower();
+
+            if (!Settings.Default.RPC) return;
+
+            XmlNode xn = bittyData.SelectSingleNode($"//funkey[@id='{localBittyID}']");
+            if (xn == null) return;
+
+            currentBittyName = xn.Attributes["name"].Value;
+            setRP(currentWorld, currentActivity, currentBitty, currentBittyName);
         }
 
         //

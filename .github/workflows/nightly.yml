@@ -1,0 +1,44 @@
+# Builds a .NET framework project
+name: Nightly builds
+
+env:
+  projectName: OpenFK
+  projectFolder: OpenFK
+  solutionFile: OpenFK.sln
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [ Debug, Release ]
+    runs-on: windows-2019
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+      
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+      
+      - name: Restore Packages
+        run: nuget restore ${{ env.solutionFile }}
+      
+      - name: Build solution
+        run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=$env:configuration
+        env:
+          configuration: ${{ matrix.configuration }}
+      
+      - name: Upload the build results as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.projectFolder }}/bin/${{ matrix.configuration }}/*
+          name: ${{ env.projectName }}.Nightly.${{ matrix.configuration }}

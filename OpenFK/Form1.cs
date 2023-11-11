@@ -1,4 +1,4 @@
-using AxShockwaveFlashObjects;
+﻿using AxShockwaveFlashObjects;
 using DiscordRPC;
 using Microsoft.Win32;
 using OpenFK.OFK.Common;
@@ -84,7 +84,7 @@ namespace OpenFK
             InitializeComponent();
             if (args.Contains("/debug")) 
             {
-                DebugWindow debug = new DebugWindow();
+                DebugWindow debug = new();
                 debug.Show();
             }
         }
@@ -96,11 +96,11 @@ namespace OpenFK
             {
                 client = new DiscordRpcClient("506150783893504001");
                 client.Initialize();
-                setRP("Main Menu", "At the main menu", "fffffff0", "U.B.");
+                SetRP("Main Menu", "At the main menu", "fffffff0", "U.B.");
             }
             //End of RP Initialize
 
-            DebugOnline = Properties.Settings.Default.IsOnline;
+            DebugOnline = Settings.Default.IsOnline;
 
             //Flash initialization
             AS2Container.Quality = Settings.Default.Quality;
@@ -109,7 +109,7 @@ namespace OpenFK
             AS2Container.Movie = Directory.GetCurrentDirectory() + @"\Main.swf"; //Sets Main.swf as the Flash Movie to Play.
             AS2Container.Play(); //Plays Main.swf
             LogManager.LogGeneral("[AS2Container] Main.swf is Loaded");
-            AS2Container.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(flashPlayer_FSCommand); //This sets up the FSCommand handler, which CCommunicator likes to use a lot.
+            AS2Container.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashPlayer_FSCommand); //This sets up the FSCommand handler, which CCommunicator likes to use a lot.
 
             try
             {
@@ -118,8 +118,8 @@ namespace OpenFK
                 AS3Container.ScaleMode = Settings.Default.ScaleMode;
                 AS3Container.Movie = Directory.GetCurrentDirectory() + @"\MainAS3.swf"; //Sets MainAS3.swf as the Flash Movie to Play.
                 LogManager.LogGeneral("[AS3Container] MainAS3.swf is Loaded");
-                AS3Container.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(flashPlayerAS3_FSCommand);
-                AS3Container.FlashCall += new _IShockwaveFlashEvents_FlashCallEventHandler(flashPlayerAS3_FlashCall);
+                AS3Container.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashPlayerAS3_FSCommand);
+                AS3Container.FlashCall += new _IShockwaveFlashEvents_FlashCallEventHandler(FlashPlayerAS3_FlashCall);
             }
             catch
             {
@@ -130,11 +130,13 @@ namespace OpenFK
             //customF Initialization
             if (Settings.Default.customF == true) //If using no USB
             {
-                this.watcher = new FileSystemWatcher();
-                watcher.Path = Directory.GetCurrentDirectory();
-                watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-                                       | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-                watcher.Filter = "customF.txt";
+                watcher = new FileSystemWatcher
+                {
+                    Path = Directory.GetCurrentDirectory(),
+                    NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
+                                       | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+                    Filter = "customF.txt"
+                };
                 watcher.Changed += OnChanged;
                 watcher.SynchronizingObject = AS2Container;
                 watcher.EnableRaisingEvents = true;
@@ -152,12 +154,14 @@ namespace OpenFK
                     throw new InvalidOperationException(@"Cannot open registry key HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers.");
                 using (key)
                     key.SetValue(Directory.GetParent(Directory.GetCurrentDirectory()) + @"\MegaByte\" + "MegaByte.exe", "VISTASP2");
-                Process MBRun = new Process();
-                ProcessStartInfo MBData = new ProcessStartInfo();
-                MBData.FileName = Directory.GetParent(Directory.GetCurrentDirectory()) + @"\MegaByte\" + "MegaByte.exe";
-                MBData.Arguments = "-MBRun -MBDebug";
-                MBData.UseShellExecute = false;
-                MBData.WindowStyle = ProcessWindowStyle.Minimized;
+                Process MBRun = new();
+                ProcessStartInfo MBData = new()
+                {
+                    FileName = Directory.GetParent(Directory.GetCurrentDirectory()) + @"\MegaByte\" + "MegaByte.exe",
+                    Arguments = "-MBRun -MBDebug",
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Minimized
+                };
                 MBRun.StartInfo = MBData;
                 MBRun.Start();
                 InitTimer();
@@ -168,12 +172,12 @@ namespace OpenFK
             TopMost = false;
         }
 
-        private void flashPlayerAS3_FSCommand(object sender, _IShockwaveFlashEvents_FSCommandEvent e)
+        private void FlashPlayerAS3_FSCommand(object sender, _IShockwaveFlashEvents_FSCommandEvent e)
         {
             LogManager.LogIncoming($"[AS3] [{e.command}] {e.args}");
             if(e.args.Contains("<save_jpeg ")) //Saving jpegs for UG game thumbnails or game over backgrounds.
             {
-                XmlDocument request = new XmlDocument(); //e.args to xml
+                XmlDocument request = new(); //e.args to xml
                 request.LoadXml(e.args);
                 XmlNodeList xnList = request.SelectNodes("/commands/save_jpeg"); //filters xml to the load info
                 foreach (XmlNode xn in xnList) //fetches the information to load
@@ -194,7 +198,7 @@ namespace OpenFK
 
             if (e.args.Contains("<as3_transit"))
             {
-                setVar(e.args); //Sends the AS3 command to AS2.
+                SetVar(e.args); //Sends the AS3 command to AS2.
             }
         }
 
@@ -204,12 +208,12 @@ namespace OpenFK
         public void InitTimer()
         {
             bittyTimer = new System.Windows.Forms.Timer();
-            bittyTimer.Tick += new EventHandler(bittyT_Tick);
+            bittyTimer.Tick += new EventHandler(BittyT_Tick);
             bittyTimer.Interval = 1000;
             bittyTimer.Start();
         }
 
-        private void bittyT_Tick(object sender, EventArgs e)
+        private void BittyT_Tick(object sender, EventArgs e)
         {
             try
             {
@@ -252,12 +256,12 @@ namespace OpenFK
         //
 
 
-        private void flashPlayerAS3_FlashCall(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
+        private void FlashPlayerAS3_FlashCall(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
         {
             LogManager.LogIncoming("[AS3] [FlashCall] " + e.request);
             if(e.request.Contains("<as3_loaded "))
             {
-                setVar(@"<?xml version=""1.0"" encoding=""UTF - 8""?><commands><as3_loaded id=""1"" path=""MainAS3.swf"" result=""0"" err="""" /></commands>");
+                SetVar(@"<?xml version=""1.0"" encoding=""UTF - 8""?><commands><as3_loaded id=""1"" path=""MainAS3.swf"" result=""0"" err="""" /></commands>");
             }
         }
 
@@ -280,7 +284,7 @@ namespace OpenFK
         //FSCOMMAND HANDLER
         //
 
-        void flashPlayer_FSCommand(object sender, _IShockwaveFlashEvents_FSCommandEvent e) //FSCommand Handler
+        void FlashPlayer_FSCommand(object sender, _IShockwaveFlashEvents_FSCommandEvent e) //FSCommand Handler
         {
             // We put these here because these use a different xml scheme and to prevent clutter in the general logs.
             // It is also important to return, since only we call this and know to not put anything else in it to prevent bugs due to bad code below.
@@ -348,7 +352,7 @@ namespace OpenFK
                 //XML PARSING
                 string filename; //section
                 string foldername; //name
-                XmlDocument request = new XmlDocument(); //e.args to xml
+                XmlDocument request = new(); //e.args to xml
                 request.LoadXml(e.args);
                 XmlNodeList xnList = request.SelectNodes("/commands/load"); //filters xml to the load info
                 foreach (XmlNode xn in xnList) //fetches the information to load
@@ -358,54 +362,54 @@ namespace OpenFK
                     foldername = xn.Attributes["name"].Value;
 
                     LogManager.LogFile($"[Load] {foldername}/{filename}");
-                    loadFile(filename, foldername);
+                    LoadFile(filename, foldername);
 
                     //Rich Prescense
                     if (Settings.Default.RPC == true)
                     {
                         if (e.args.Contains(@"=""city"""))
                         {
-                            setRP("Exploring", "Funkeystown", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Funkeystown", currentBitty, currentBittyName);
                         }
                         else if (e.args.Contains(@"=""lava"""))
                         {
-                            setRP("Exploring", "Magma Gorge", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Magma Gorge", currentBitty, currentBittyName);
                         }
                         else if (e.args.Contains(@"=""space"""))
                         {
-                            setRP("Exploring", "Laputta Station", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Laputta Station", currentBitty, currentBittyName);
                         }
                         else if (e.args.Contains(@"=""underwater"""))
                         {
-                            setRP("Exploring", "Kelpy Basin", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Kelpy Basin", currentBitty, currentBittyName);
                         }
                         else if (e.args.Contains(@"=""island"""))
                         {
-                            setRP("Exploring", "Funkiki Island", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Funkiki Island", currentBitty, currentBittyName);
                         }
                         else if (e.args.Contains(@"=""racer"""))
                         {
-                            setRP("Exploring", "Royalton Racing Complex", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Royalton Racing Complex", currentBitty, currentBittyName);
                         }
                         else if (e.args.Contains(@"=""night"""))
                         {
-                            setRP("Exploring", "Nightmare Rift", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Nightmare Rift", currentBitty, currentBittyName);
                         }
                         else if (e.args.Contains(@"=""day"""))
                         {
-                            setRP("Exploring", "Daydream Oasis", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Daydream Oasis", currentBitty, currentBittyName);
                         }
                         else if (e.args.Contains(@"=""realm"""))
                         {
-                            setRP("Exploring", "Hidden Realm", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Hidden Realm", currentBitty, currentBittyName);
                         }
                         else if (e.args.Contains(@"=""ssl"""))
                         {
-                            setRP("Exploring", "Angus Manor", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Angus Manor", currentBitty, currentBittyName);
                         }
                         else if (e.args.Contains(@"=""green"""))
                         {
-                            setRP("Exploring", "Paradox Green", currentBitty, currentBittyName);
+                            SetRP("Exploring", "Paradox Green", currentBitty, currentBittyName);
                         }
                     }
                 }
@@ -422,7 +426,7 @@ namespace OpenFK
                 //BityByte
                 if (Settings.Default.customF == true) //If using no USB
                 {
-                    setVar(@"<bitybyte id=""FFFFFFF000000000"" />");
+                    SetVar(@"<bitybyte id=""FFFFFFF000000000"" />");
                 }
             }
             
@@ -440,7 +444,7 @@ namespace OpenFK
 
                 string filename; //section
                 string foldername; //name
-                XmlDocument request = new XmlDocument(); //e.args to xml
+                XmlDocument request = new(); //e.args to xml
                 request.LoadXml(e.args);
                 XmlNodeList xnList = request.SelectNodes("/commands/save"); //filters xml to the load info;
                 foreach (XmlNode xn in xnList) //fetches the information to load
@@ -457,8 +461,10 @@ namespace OpenFK
                     args.Root.Add(save.Elements());
 
                     XElement firstChild = args.Root.Elements().First(); //Removing commands element
-                    XDocument output = new XDocument(new XDeclaration("1.0", "utf-8", "yes"),
-                                                     firstChild);
+                    XDocument output = new(
+                        new XDeclaration("1.0", "utf-8", "yes"),
+                        firstChild
+                    );
 
                     if(!Directory.Exists(Directory.GetCurrentDirectory() + @"\data\" + foldername))
                     {
@@ -487,14 +493,14 @@ namespace OpenFK
             {
                 AS3Container.Play();
                 AS2Container.SendToBack(); //Goes to AS3 container.
-                setVar(@"<getstaticdata />");
-                setVar(@"<getgamedata />");
-                setVar(@"<getugsettings />");
+                SetVar(@"<getstaticdata />");
+                SetVar(@"<getgamedata />");
+                SetVar(@"<getugsettings />");
             }
 
             if (e.args.Contains("<as3_close"))
             {
-                setVar(@"<leavegame />"); //Tells the AS3 game to end.
+                SetVar(@"<leavegame />"); //Tells the AS3 game to end.
                 AS3Container.SendToBack(); //Returns to AS2 container.
                 AS3Container.Stop();
             }
@@ -509,7 +515,7 @@ namespace OpenFK
 
             if (e.args.Contains("<del_file ")) //Deletes files, only for UG thumnails.
             {
-                XmlDocument request = new XmlDocument(); //e.args to xml
+                XmlDocument request = new(); //e.args to xml
                 request.LoadXml(e.args);
                 XmlNodeList xnList = request.SelectNodes("/commands/save_jpeg"); //filters xml to the load info
                 foreach (XmlNode xn in xnList) //fetches the information to load
@@ -545,12 +551,14 @@ namespace OpenFK
                     {
                         if (WasUpdated == true) //If the game was updated. I don't know why it doesn't use a special command, but fine I guess...
                         {
-                            File.WriteAllText(Directory.GetCurrentDirectory() + @"\update.bat", Properties.Resources.Update);
-                            ProcessStartInfo updatescript = new ProcessStartInfo(Directory.GetCurrentDirectory() + @"\update.bat");
-                            updatescript.UseShellExecute = true;
-                            var updateprocess = Process.Start(updatescript);
+                            File.WriteAllText(Directory.GetCurrentDirectory() + @"\update.bat", Resources.Update);
+                            ProcessStartInfo updatescript = new(Directory.GetCurrentDirectory() + @"\update.bat")
+                            {
+                                UseShellExecute = true
+                            };
+                            _ = Process.Start(updatescript);
                         }
-                        if (Settings.Default.customF && Settings.Default.closeFSGUI && FSGUI_process != null)
+                        if (Settings.Default.closeFSGUI && FSGUI_process != null)
                         {
                             FSGUI_process.EnableRaisingEvents = false;
                             FSGUI_process.Kill();
@@ -560,10 +568,10 @@ namespace OpenFK
                 }
                 if(WasUpdated == true) //If the game was updated. I don't know why it doesn't use a special command, but fine I guess...
                 {
-                    File.WriteAllText(Directory.GetCurrentDirectory() + @"\update.bat", Properties.Resources.Update);
-                    ProcessStartInfo updatescript = new ProcessStartInfo(Directory.GetCurrentDirectory() + @"\update.bat");
+                    File.WriteAllText(Directory.GetCurrentDirectory() + @"\update.bat", Resources.Update);
+                    ProcessStartInfo updatescript = new(Directory.GetCurrentDirectory() + @"\update.bat");
                     updatescript.UseShellExecute = true;
-                    var updateprocess = Process.Start(updatescript);
+                    _ = Process.Start(updatescript);
                 }
                 if (Settings.Default.customF && Settings.Default.closeFSGUI && FSGUI_process != null)
                 {
@@ -587,7 +595,7 @@ namespace OpenFK
 
                 //PARSE OF XML DATA
 
-                XmlDocument doc = new XmlDocument();
+                XmlDocument doc = new();
                 doc.LoadXml(e.args.ToString());
                 var nodeList = doc.SelectNodes("commands");
                 string commandLimited = "";
@@ -595,7 +603,7 @@ namespace OpenFK
                 {
                     commandLimited = node.InnerXml;
                 }
-                XmlDocument doc2 = new XmlDocument();
+                XmlDocument doc2 = new();
                 doc2.LoadXml(commandLimited);
                 XmlElement root = doc2.DocumentElement;
                 string name = root.GetAttribute("state"); //Fullscreen status
@@ -629,7 +637,7 @@ namespace OpenFK
                 string tnurl = "";
                 if(e.args.Contains("<save_level "))
                 {
-                    XmlDocument request = new XmlDocument(); //e.args to xml
+                    XmlDocument request = new(); //e.args to xml
                     request.LoadXml(e.args);
                     XmlNodeList xnList = request.SelectNodes("/netcommands/save_level"); //filters xml to the load info
                     foreach (XmlNode xn in xnList)
@@ -637,10 +645,8 @@ namespace OpenFK
                         tnurl = xn.Attributes["tnurl"].Value;
                     }
 
-                    using(var client = new System.Net.WebClient()) 
-                    {
-                        client.UploadFile(Host + "/" + tnurl, "PUT", Directory.GetCurrentDirectory() + @"\" + tnurl);
-                    }
+                    using WebClient client = new();
+                    client.UploadFile(Host + "/" + tnurl, "PUT", Directory.GetCurrentDirectory() + @"\" + tnurl);
                 }
 
                 if (DebugOnline == true)
@@ -652,7 +658,7 @@ namespace OpenFK
             //TRUNK UPDATE CHECKS
             if (e.args.Contains("<commands><checktrunkupdate"))
             {
-                setVar(@"<checktrunkupdate result=""0"" reason=""Everything is up to date."" />");
+                SetVar(@"<checktrunkupdate result=""0"" reason=""Everything is up to date."" />");
             }
 
             //UPDATE CHECKS (Not standard netcommands)
@@ -663,7 +669,7 @@ namespace OpenFK
                 string fslocalVersion = "";
                 string fslocalVerNum = "1.0";
                 LogManager.LogNetwork("[Update] Update Requested", "NetCommand");
-                setVar(@"<progress percent=""0.25"" />");
+                SetVar(@"<progress percent=""0.25"" />");
                 try
                 {
                     var localStore = XDocument.Load(Directory.GetCurrentDirectory() + @"\update.xml");
@@ -674,7 +680,7 @@ namespace OpenFK
                 {
                     LogManager.LogNetwork("[Update] Update.xml was not found", "NetCommand");
                 }
-                setVar(@"<progress percent=""25.00"" />");
+                SetVar(@"<progress percent=""25.00"" />");
                 try
                 {
                     LogManager.LogNetwork("[Update] Downloading Update.xml from GitHub", "NetCommand");
@@ -683,12 +689,12 @@ namespace OpenFK
                     string netVersion = netStore.Root.Attribute("name").Value;
                     string netVersionNum = netStore.Root.Attribute("version").Value;
                     string netVersionSize = netStore.Root.Attribute("size").Value;
-                    setVar(@"<progress percent=""50.00"" />");
+                    SetVar(@"<progress percent=""50.00"" />");
                     if (localVersion != netVersion)
                     {
                         LogManager.LogNetwork("[Update] An update is needed", "NetCommand");
                         netStore.Save(Directory.GetCurrentDirectory() + @"\update.xml");
-                        setVar(@"<checkupdate result=""2"" reason=""New version of OpenFK found."" version=""2009_07_16_544"" size=""" + netVersionSize + @""" curversion=""" + localVerNum + @""" extversion=""" + netVersionNum + @""" extname=""" + netVersion + @""" />");
+                        SetVar(@"<checkupdate result=""2"" reason=""New version of OpenFK found."" version=""2009_07_16_544"" size=""" + netVersionSize + @""" curversion=""" + localVerNum + @""" extversion=""" + netVersionNum + @""" extname=""" + netVersion + @""" />");
                     }
                     else if(File.Exists(Directory.GetCurrentDirectory() + @"\FunkeySelectorGUI.exe"))
                     {
@@ -702,7 +708,7 @@ namespace OpenFK
                         {
                             LogManager.LogNetwork("[Update] FSGUI Update.xml was not found", "NetCommand");
                         }
-                        setVar(@"<progress percent=""75.00"" />");
+                        SetVar(@"<progress percent=""75.00"" />");
                         try
                         {
                             LogManager.LogNetwork("[Update] Downloading FSGUI Update.xml from GitHub", "NetCommand");
@@ -711,7 +717,7 @@ namespace OpenFK
                             string fsnetVersion = fsnetStore.Root.Attribute("name").Value;
                             string fsnetVersionNum = fsnetStore.Root.Attribute("version").Value;
                             string fsnetVersionSize = fsnetStore.Root.Attribute("size").Value;
-                            setVar(@"<progress percent=""90.00"" />");
+                            SetVar(@"<progress percent=""90.00"" />");
                             if (fslocalVersion != fsnetVersion)
                             {
                                 try
@@ -724,28 +730,28 @@ namespace OpenFK
                                     LogManager.LogNetwork("[Update] Cannot close FSGUI", "NetCommand");
                                 }
                                 LogManager.LogNetwork("[Update] A FSGUI update is needed", "NetCommand");
-                                setVar(@"<checkupdate result=""2"" reason=""New version of FSGUI found."" version=""2009_07_16_544"" size=""" + fsnetVersionSize + @""" curversion=""" + fslocalVerNum + @""" extversion=""" + fsnetVersionNum + @""" extname=""" + fsnetVersion + @""" />");
+                                SetVar(@"<checkupdate result=""2"" reason=""New version of FSGUI found."" version=""2009_07_16_544"" size=""" + fsnetVersionSize + @""" curversion=""" + fslocalVerNum + @""" extversion=""" + fsnetVersionNum + @""" extname=""" + fsnetVersion + @""" />");
                             }
                             else
                             {
-                                setVar(@"<checkupdate result=""0"" reason=""Everything is up to date."" />");
+                                SetVar(@"<checkupdate result=""0"" reason=""Everything is up to date."" />");
                             }
                         }
                         catch
                         {
                             LogManager.LogNetwork("[Update] No FSGUI update", "NetCommand");
-                            setVar(@"<checkupdate result=""1"" reason=""Could not find the FunkeySelectorGUI update!"" />");
+                            SetVar(@"<checkupdate result=""1"" reason=""Could not find the FunkeySelectorGUI update!"" />");
                         }
                     }
                     else
                     {
-                        setVar(@"<checkupdate result=""0"" reason=""Everything is up to date."" />");
+                        SetVar(@"<checkupdate result=""0"" reason=""Everything is up to date."" />");
                     }
                 }
                 catch
                 {
                     LogManager.LogNetwork("[Update] No update", "NetCommand");
-                    setVar(@"<checkupdate result=""1"" reason=""Could not find the OpenFK update!"" />");
+                    SetVar(@"<checkupdate result=""1"" reason=""Could not find the OpenFK update!"" />");
                 }
             }
 
@@ -756,14 +762,14 @@ namespace OpenFK
                     if (fsnetStore != null)
                     {
                         string fsnetDL = fsnetStore.Root.Attribute("url").Value;
-                        using (var client = new WebClient())
+                        using (WebClient client = new())
                         {
                             ServicePointManager.Expect100Continue = true;
                             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                             client.DownloadFile(fsnetDL, Directory.GetCurrentDirectory() + @"\FunkeySelectorGUI.exe");
                         }
                         fsnetStore.Save(Directory.GetCurrentDirectory() + @"\fsguiupdate.xml");
-                        setVar(@"<loadupdate result=""0"" reason=""good"" />");
+                        SetVar(@"<loadupdate result=""0"" reason=""good"" />");
                     }
                     else
                     {
@@ -786,13 +792,13 @@ namespace OpenFK
                         netStore.Save(Directory.GetCurrentDirectory() + @"\update.xml");
                         Directory.CreateDirectory(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\tmpdl\"));
                         System.IO.Compression.ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + @"\tmpdl.zip", Directory.GetCurrentDirectory() + @"\tmpdl\");
-                        setVar(@"<loadupdate result=""0"" reason=""good"" />");
+                        SetVar(@"<loadupdate result=""0"" reason=""good"" />");
                         WasUpdated = true;
                     }
                 }
                 catch
                 {
-                    setVar(@"<loadupdate result=""1"" reason=""The update has failed! Try restarting OpenFK..."" />");
+                    SetVar(@"<loadupdate result=""1"" reason=""The update has failed! Try restarting OpenFK..."" />");
                 }
             }
 
@@ -812,7 +818,7 @@ namespace OpenFK
                 string savepassword;
                 string hinta;
                 string hintq;
-                XmlDocument request = new XmlDocument(); //e.args to xml
+                XmlDocument request = new(); //e.args to xml
                 request.LoadXml(e.args);
                 XmlNodeList xnList = request.SelectNodes("/commands/createuser"); //filters xml to the load info
                 foreach (XmlNode xn in xnList) //fetches the information to load
@@ -824,7 +830,7 @@ namespace OpenFK
                     hintq = xn.Attributes["hintq"].Value;
                     hinta = xn.Attributes["hinta"].Value;
                     LogManager.LogFile("[Load] File Requested - system/users");
-                    loadFile("users", "system");
+                    LoadFile("users", "system");
                     string userString = userData.OuterXml;
                     string data2send = userString.Replace("</users>", "") + @"<user gname=""" + username + @""" hinta=""" + hinta + @""" hintq=""" + hintq + @""" savepassword=""" + savepassword + @""" password=""" + password + @""" name=""" + username + @""" /></users>";
                     if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\data\" + "system"))
@@ -873,7 +879,7 @@ namespace OpenFK
             e.Cancel = (e.CloseReason == CloseReason.UserClosing);
             if (e.CloseReason == CloseReason.UserClosing) //If user clicked the close button
             {
-                setVar(@"<radicaclose />");
+                SetVar(@"<radicaclose />");
             }
             if (e.CloseReason == CloseReason.WindowsShutDown) //If windows is shutting down
             {
@@ -903,11 +909,11 @@ namespace OpenFK
         //FILE LOADING
         //
 
-        public void loadFile(string file, string folder)
+        public void LoadFile(string file, string folder)
         {
             Encoding iso_8859_1 = Encoding.GetEncoding("iso-8859-1");
-            string index = "";
-            string filedata = "";
+            string index;
+            string filedata;
             try
             {
                 if (Settings.Default.RDF == true)
@@ -933,22 +939,22 @@ namespace OpenFK
 
                 if (file == "config")
                 {
-                    XmlDocument configData = new XmlDocument();
+                    XmlDocument configData = new();
                     configData.LoadXml(filedata);
 
-                    if (Properties.Settings.Default.IsOnline)
+                    if (Settings.Default.IsOnline)
                     {
                         XmlAttribute host = (XmlAttribute)configData.SelectSingleNode("/settings/host/@value");
-                        host.Value = Properties.Settings.Default.HTTPHost1;
+                        host.Value = Settings.Default.HTTPHost1;
 
                         XmlAttribute host1 = (XmlAttribute)configData.SelectSingleNode("/settings/host1/@value");
-                        host1.Value = Properties.Settings.Default.HTTPHost2;
+                        host1.Value = Settings.Default.HTTPHost2;
 
                         XmlAttribute tcpHost = (XmlAttribute)configData.SelectSingleNode("/settings/arkone_host/@value");
-                        tcpHost.Value = Properties.Settings.Default.TCPHost;
+                        tcpHost.Value = Settings.Default.TCPHost;
 
                         XmlAttribute tcpPort = (XmlAttribute)configData.SelectSingleNode("/settings/arkone_port/@value");
-                        tcpPort.Value = Properties.Settings.Default.TCPPort;
+                        tcpPort.Value = Settings.Default.TCPPort;
 
                         filedata = configData.OuterXml;
                         index = @"<commands><load section=""" + file + @""" name=""" + folder + @""" result=""0"" reason="""">" + filedata + @"</load></commands>";
@@ -984,7 +990,7 @@ namespace OpenFK
             {
                 index = @"<commands><load section=""" + file + @""" name=""" + folder + @""" result=""1"" reason=""Error loading file!"" /></commands>"; //I would just let dotNET handle this, but UGLevels needs an error to continue.
             }
-            setVar(index.ToString()); //Sends XML data to the game
+            SetVar(index.ToString()); //Sends XML data to the game
             LogManager.LogFile($"[Load] [Success] {folder}/{file}");
         }
 
@@ -996,7 +1002,7 @@ namespace OpenFK
         //SET FLASH VARIABLE
         //
 
-        public void setVar(string msg)
+        public void SetVar(string msg)
         {
             LogManager.LogOutgoing("[SetVar/Return] Returned Message - " + msg);
             AS2Container.SetVariable("msg", msg); //Sends message (msg) to the game
@@ -1010,7 +1016,7 @@ namespace OpenFK
         //RICH PRESENCE
         //
 
-        void setRP(string title, string info, string bittyID, string bittyName)
+        void SetRP(string title, string info, string bittyID, string bittyName)
         {
             currentWorld = title;
             currentActivity = info;
@@ -1040,7 +1046,7 @@ namespace OpenFK
         {
             if (bittyID == localBittyID) return;
 
-            setVar(@$"<bitybyte id=""{localBittyID}00000000"" />");
+            SetVar(@$"<bitybyte id=""{localBittyID}00000000"" />");
             bittyID = localBittyID;
             currentBitty = localBittyID.ToLower();
 
@@ -1050,7 +1056,7 @@ namespace OpenFK
             if (xn == null) return;
 
             currentBittyName = xn.Attributes["name"].Value;
-            setRP(currentWorld, currentActivity, currentBitty, currentBittyName);
+            SetRP(currentWorld, currentActivity, currentBitty, currentBittyName);
         }
 
         //
@@ -1080,7 +1086,7 @@ namespace OpenFK
 
             if(responseString.Contains("<get_level "))
             {
-                XmlDocument xRequest = new XmlDocument(); //e.args to xml
+                XmlDocument xRequest = new(); //e.args to xml
                 xRequest.LoadXml(responseString);
                 XmlNodeList xnList = xRequest.SelectNodes("/get_level/level"); //filters xml to the load info
                 foreach (XmlNode xn in xnList)
@@ -1093,15 +1099,13 @@ namespace OpenFK
 
                 if (tnurl != "")
                 {
-                    using (var client = new System.Net.WebClient())
-                    {
-                        client.DownloadFile(Host + "/" + tnurl, Directory.GetCurrentDirectory() + @"\" + tnurl);
-                    }
+                    using WebClient client = new();
+                    client.DownloadFile(Host + "/" + tnurl, Directory.GetCurrentDirectory() + @"\" + tnurl);
                 }
             }
             else if (responseString.Contains("<get_top "))
             {
-                XmlDocument xRequest = new XmlDocument(); //e.args to xml
+                XmlDocument xRequest = new(); //e.args to xml
                 xRequest.LoadXml(responseString);
                 XmlNodeList xnList = xRequest.SelectNodes("/get_top/levels/level"); //filters xml to the load info
                 foreach (XmlNode xn in xnList)
@@ -1112,16 +1116,14 @@ namespace OpenFK
                     }
                     if (tnurl != "")
                     {
-                        using (var client = new System.Net.WebClient())
-                        {
-                            client.DownloadFile(Host + "/" + tnurl, Directory.GetCurrentDirectory() + @"\" + tnurl);
-                        }
+                        using WebClient client = new();
+                        client.DownloadFile(Host + "/" + tnurl, Directory.GetCurrentDirectory() + @"\" + tnurl);
                     }
                 }
             }
             else if (responseString.Contains("<get_sh_levels "))
             {
-                XmlDocument xRequest = new XmlDocument(); //e.args to xml
+                XmlDocument xRequest = new(); //e.args to xml
                 xRequest.LoadXml(responseString);
                 XmlNodeList xnList = xRequest.SelectNodes("/get_sh_levels/levels/level"); //filters xml to the load info
                 foreach (XmlNode xn in xnList)
@@ -1132,10 +1134,8 @@ namespace OpenFK
                     }
                     if(tnurl != "") 
                     {
-                        using (var client = new System.Net.WebClient())
-                        {
-                            client.DownloadFile(Host + "/" + tnurl, Directory.GetCurrentDirectory() + @"\" + tnurl);
-                        }
+                        using WebClient client = new();
+                        client.DownloadFile(Host + "/" + tnurl, Directory.GetCurrentDirectory() + @"\" + tnurl);
                     }
                 }
             }
@@ -1158,12 +1158,10 @@ namespace OpenFK
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
+            using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            using Stream stream = response.GetResponseStream();
+            using StreamReader reader = new(stream);
+            return reader.ReadToEnd();
         }
         //
         //END OF HTTP GET
@@ -1171,7 +1169,7 @@ namespace OpenFK
 
         public void StartFSGUI(object sender = null, EventArgs e = null)
         {
-            ProcessStartInfo FSGUI_processStartInfo = new ProcessStartInfo
+            ProcessStartInfo FSGUI_processStartInfo = new()
             {
                 FileName = Directory.GetCurrentDirectory() + @"\FunkeySelectorGUI.exe",
                 UseShellExecute = false,

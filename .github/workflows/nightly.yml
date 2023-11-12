@@ -18,6 +18,7 @@ jobs:
     strategy:
       matrix:
         configuration: [ Debug, Release ]
+        platform: [ x64, x86 ]
     runs-on: windows-2019
     steps:
       - name: Checkout repository
@@ -31,14 +32,23 @@ jobs:
       
       - name: Restore Packages
         run: nuget restore ${{ env.solutionFile }}
+
+      - name: Fetch Flash.OCX
+        shell: cmd
+        run: FetchOCX.bat
+      
+      - name: Move Flash.OCX to path
+        run: |
+          mkdir path_dir
+          mv Flash.OCX path_dir/Flash.OCX
+          echo "${{ github.workspace }} ${{ github.workspace }}\path_dir"
+          echo "${{ github.workspace }}\path_dir" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       
       - name: Build solution
-        run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=$env:configuration
-        env:
-          configuration: ${{ matrix.configuration }}
+        run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=${{ matrix.configuration }} -property:Platform=${{ matrix.platform }}
       
       - name: Upload the build results as an artifact
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ env.projectFolder }}/bin/${{ matrix.configuration }}/*
-          name: ${{ env.projectName }}.Nightly.${{ matrix.configuration }}
+          path: ${{ env.projectFolder }}/bin/${{ matrix.platform }}/${{ matrix.configuration }}/*
+          name: ${{ env.projectName }}.Nightly.${{ matrix.configuration }}.${{ matrix.platform }}

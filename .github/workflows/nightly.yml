@@ -44,9 +44,10 @@ jobs:
           echo "${{ github.workspace }} ${{ github.workspace }}\path_dir"
           echo "${{ github.workspace }}\path_dir" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       
-      - name: Generate AxShockwaveFlashObjects.dll and ShockwaveFlashObjects.dll
+      - name: Register Flash.OCX and generate AxShockwaveFlashObjects.dll and ShockwaveFlashObjects.dll
         shell: cmd
         run: |
+          regsvr32 "${{ github.workspace }}\path_dir\Flash.OCX"
           "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\aximp.exe" "${{ github.workspace }}\path_dir\Flash.OCX"
       
       - name: Build solution

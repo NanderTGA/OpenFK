@@ -47,7 +47,7 @@ jobs:
       - name: Generate AxShockwaveFlashObjects.dll and ShockwaveFlashObjects.dll
         shell: cmd
         run: |
-          "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\aximp.exe" "${{ github.workspace }}\path_dir\Flash.OCX" /nologo /verbose
+          "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\tlbimp.exe" "${{ github.workspace }}\path_dir\Flash.OCX" /nologo
       
       - name: Build solution
         run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=${{ matrix.configuration }} -property:Platform=${{ matrix.platform }}

@@ -30,21 +30,12 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
       
+      - name: Install Flash Player ActiveX 32.0.0.344
+        run: choco install flashplayeractivex --version=32.0.0.344
+      
       - name: Restore Packages
         run: nuget restore ${{ env.solutionFile }}
-
-      - name: Fetch Flash.OCX
-        shell: cmd
-        run: FetchOCX.bat
       
-      - name: Download RegSvrEx
-        run: Invoke-WebRequest https://github.com/vadz/RegSvrEx/releases/download/v1.0.0.1/RegSvrEx.exe -OutFile RegSvrEx.exe
-
-      - name: Register Flash.OCX
-        shell: cmd
-        run: |
-          RegSvrEx.exe /c /u "${{ github.workspace }}\Flash.ocx"
-
       - name: Build solution
         run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=${{ matrix.configuration }} -property:Platform=${{ matrix.platform }}
       

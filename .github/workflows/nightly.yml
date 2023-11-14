@@ -30,8 +30,8 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
       
-      - name: Install Flash Player ActiveX 32.0.0.344
-        run: choco install flashplayeractivex --version=32.0.0.344
+      - name: Install Flash Player ActiveX 32.0.0.363
+        run: choco install flashplayeractivex --version=32.0.0.363
       
       - name: Restore Packages
         run: nuget restore ${{ env.solutionFile }}

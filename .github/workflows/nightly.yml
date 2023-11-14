@@ -37,17 +37,12 @@ jobs:
         shell: cmd
         run: FetchOCX.bat
       
-      - name: Move Flash.OCX to path
-        run: |
-          mkdir path_dir
-          mv Flash.OCX path_dir/Flash.OCX
-          echo "${{ github.workspace }} ${{ github.workspace }}\path_dir"
-          echo "${{ github.workspace }}\path_dir" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Download RegSvrEx
+        run: Invoke-WebRequest https://github.com/vadz/RegSvrEx/releases/download/v1.0.0.1/RegSvrEx.exe -OutFile RegSvrEx.exe
       
-      - name: Generate AxShockwaveFlashObjects.dll and ShockwaveFlashObjects.dll
-        shell: cmd
+      - name: Register Flash.OCX
         run: |
-          "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\aximp.exe" "${{ github.workspace }}\path_dir\Flash.OCX" /nologo
+          ./RegSvrEx.exe /c "${{ github.workspace }}\Flash.ocx"
       
       - name: Build solution
         run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=${{ matrix.configuration }} -property:Platform=${{ matrix.platform }}

@@ -39,12 +39,12 @@ jobs:
       
       - name: Download RegSvrEx
         run: Invoke-WebRequest https://github.com/vadz/RegSvrEx/releases/download/v1.0.0.1/RegSvrEx.exe -OutFile RegSvrEx.exe
-      
+
       - name: Register Flash.OCX
         shell: cmd
         run: |
-          RegSvrEx.exe /c "${{ github.workspace }}\Flash.ocx"
-      
+          RegSvrEx.exe /c /u "${{ github.workspace }}\Flash.ocx"
+
       - name: Build solution
         run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=${{ matrix.configuration }} -property:Platform=${{ matrix.platform }}
       

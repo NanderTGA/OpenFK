@@ -30,10 +30,12 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
       
-      - name: Install Flash Player ActiveX
-        run: |
-          Invoke-WebRequest https://archive.org/download/flashplayer32_0r0_363_win/flashplayer32_0r0_363_winax.exe -OutFile flashinstaller.exe
-          ./flashinstaller.exe -install
+      - name: Download flash
+        run: Invoke-WebRequest https://archive.org/download/flashplayer32_0r0_363_win/flashplayer32_0r0_363_winax.exe -OutFile flashinstaller.exe
+      
+      - name: Install flash
+        run: flashinstaller.exe -install
+        shell: cmd
       
       - name: Restore Packages
         run: nuget restore ${{ env.solutionFile }}

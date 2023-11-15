@@ -38,20 +38,12 @@ jobs:
         shell: cmd
         run: |
           "%systemroot%\System32\regsvr32.exe" /s "${{ github.workspace }}\Flash.ocx"
-          reg query HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{D27CDB6B-AE6D-11CF-96B8-444553540000}
-          reg query HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{D27CDB6E-AE6D-11cf-96B8-444553540000}
-
-      - name: Check Registry Entries
-        shell: cmd
-        run: |
-          reg query HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{D27CDB6B-AE6D-11CF-96B8-444553540000}
-          reg query HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{D27CDB6E-AE6D-11cf-96B8-444553540000}
       
       - name: Restore Packages
         run: nuget restore ${{ env.solutionFile }}
       
       - name: Build solution
-        run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=${{ matrix.configuration }} -property:Platform=${{ matrix.platform }}
+        run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=${{ matrix.configuration }} -property:Platform=${{ matrix.platform }} -verbosity:detailed
       
       - name: Upload the build results as an artifact
         uses: actions/upload-artifact@v3

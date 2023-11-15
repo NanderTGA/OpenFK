@@ -32,12 +32,13 @@ jobs:
 
       - name: Download Flash.OCX
         shell: cmd
-        run: FetchOCX.bat
+        run: FetchBothOCXs.bat
       
       - name: Register Flash.OCX
         shell: cmd
         run: |
-          "%systemroot%\System32\regsvr32.exe" /s "${{ github.workspace }}\Flash.ocx"
+          "%systemroot%\System32\regsvr32.exe" /s "${{ github.workspace }}\Flash64.ocx"
+          "%systemroot%\SysWow64\regsvr32.exe" /s "${{ github.workspace }}\Flash32.ocx"
       
       - name: Restore Packages
         run: nuget restore ${{ env.solutionFile }}

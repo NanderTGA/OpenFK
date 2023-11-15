@@ -16,10 +16,12 @@ echo Fetching OCX...
 IF EXIST "%PROGRAMFILES(X86)%" (GOTO 64BIT) ELSE (GOTO 32BIT)
 
 :64BIT
+echo Grabbing 64-bit DLL...
 copy "%cd%\amd64_adobe-flash-for-windows_31bf3856ad364e35_10.0.18362.172_none_815470a5fb446c4e\flash.ocx" "..\Flash.ocx"
 GOTO END
 
 :32BIT
+echo Grabbing 32-bit DLL...
 copy "%cd%\wow64_adobe-flash-for-windows_31bf3856ad364e35_10.0.18362.172_none_8ba91af82fa52e49\flash.ocx" "..\Flash.ocx"
 GOTO END
 

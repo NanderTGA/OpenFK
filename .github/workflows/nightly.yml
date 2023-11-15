@@ -38,6 +38,8 @@ jobs:
         shell: cmd
         run: |
           "%systemroot%\System32\regsvr32.exe" /s "${{ github.workspace }}\Flash.ocx"
+          reg query HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{D27CDB6B-AE6D-11CF-96B8-444553540000}
+          reg query HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{D27CDB6E-AE6D-11cf-96B8-444553540000}
 
       - name: Check Registry Entries
         shell: cmd

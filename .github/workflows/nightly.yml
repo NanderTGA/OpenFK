@@ -36,7 +36,8 @@ jobs:
       
       - name: Register Flash.OCX
         shell: cmd
-        run: regsvr32 /s "${{ github.workspace }}\Flash.ocx"
+        run: |
+          "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\regsvr32.exe" /s "${{ github.workspace }}\Flash.ocx"
       
       - name: Restore Packages
         run: nuget restore ${{ env.solutionFile }}

@@ -29,13 +29,14 @@ jobs:
       
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
-      
-      - name: Download flash
-        run: Invoke-WebRequest https://archive.org/download/flashplayer32_0r0_363_win/flashplayer32_0r0_363_winax.exe -OutFile flashinstaller.exe
-      
-      - name: Install flash
-        run: flashinstaller.exe -install
+
+      - name: Download Flash.OCX
         shell: cmd
+        run: FetchOCX.bat
+      
+      - name: Register Flash.OCX
+        shell: cmd
+        run: regsvr32 /s "${{ github.workspace }}\Flash.ocx"
       
       - name: Restore Packages
         run: nuget restore ${{ env.solutionFile }}

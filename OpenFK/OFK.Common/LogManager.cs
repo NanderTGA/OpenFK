@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -16,16 +16,15 @@ namespace OpenFK.OFK.Common
 
         private static void AppendLine(RichTextBox richTextBox, string message)
         {
-            if (Globals.IsDebug)
+            if (!Globals.IsDebug) return;
+            try
             {
-                try
-                {
-                    richTextBox.AppendText("\n" + message);
-                }
-                catch
-                {
-                    Debug.WriteLine($"[{richTextBox.Name}] {message}");
-                }
+                if (richTextBox == null) throw new Exception("Throwing this error because we can't catch a NullReferenceException.");
+                richTextBox.AppendText("\n" + message);
+            }
+            catch
+            {
+                Debug.WriteLine($"[{richTextBox.Name}] {message}");
             }
         }
 

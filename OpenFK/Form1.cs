@@ -235,7 +235,7 @@ namespace OpenFK
                 //Converts bytes to BittyID
                 int bittyIDInt = BitConverter.ToInt32(buffer, 0);
                 string s = bittyIDInt.ToString("X").PadLeft(8, '0');
-                if (s == "00000000") //If no bitty is connected.
+                if (s == "00000000" || s == "3F3F3F3F") //If no bitty is connected.
                 {
                     s = "FFFFFFF0";
                 }

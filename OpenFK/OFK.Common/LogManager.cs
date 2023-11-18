@@ -22,6 +22,7 @@ namespace OpenFK.OFK.Common
         {
             try
             {
+                if (richTextBox == null) throw new Exception("Throwing this error because we can't catch a NullReferenceException.");
                 richTextBox.AppendText("\n" + message);
             }
             catch

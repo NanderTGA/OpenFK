@@ -567,7 +567,8 @@ namespace OpenFK
                     _ = Process.Start(updatescript);
                 }
 
-                Application.Exit();
+                if (WasUpdated && fsnetStore != null) Application.Restart();
+                else Application.Exit();
             }
 
             //

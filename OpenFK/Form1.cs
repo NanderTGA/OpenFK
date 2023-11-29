@@ -547,24 +547,7 @@ namespace OpenFK
                         Process process = Process.GetProcessesByName("MegaByte")[0];
                         process.Kill();
                     }
-                    catch
-                    {
-                        if (WasUpdated == true) //If the game was updated. I don't know why it doesn't use a special command, but fine I guess...
-                        {
-                            File.WriteAllText(Directory.GetCurrentDirectory() + @"\update.bat", Resources.Update);
-                            ProcessStartInfo updatescript = new(Directory.GetCurrentDirectory() + @"\update.bat")
-                            {
-                                UseShellExecute = true
-                            };
-                            _ = Process.Start(updatescript);
-                        }
-                        if (Settings.Default.closeFSGUI && FSGUI_process != null)
-                        {
-                            FSGUI_process.EnableRaisingEvents = false;
-                            FSGUI_process.Kill();
-                        }
-                        Application.Exit();
-                    }
+                    catch { }
                 }
                 if(WasUpdated == true) //If the game was updated. I don't know why it doesn't use a special command, but fine I guess...
                 {

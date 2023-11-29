@@ -536,10 +536,13 @@ namespace OpenFK
 
             if (e.args.Contains("radicaclose")) //Exit
             {
+                LogManager.LogGeneral("[OpenFK] Radicaclose was called");
+
                 if (Settings.Default.RPC == true)
                 {
                     client.Dispose(); //Disposes RP
                 }
+
                 if(Settings.Default.USBSupport == true)
                 {
                     try
@@ -549,6 +552,13 @@ namespace OpenFK
                     }
                     catch { }
                 }
+
+                if (Settings.Default.customF && Settings.Default.closeFSGUI && FSGUI_process != null)
+                {
+                    FSGUI_process.EnableRaisingEvents = false;
+                    FSGUI_process.Kill();
+                }
+
                 if(WasUpdated == true) //If the game was updated. I don't know why it doesn't use a special command, but fine I guess...
                 {
                     File.WriteAllText(Directory.GetCurrentDirectory() + @"\update.bat", Resources.Update);
@@ -556,13 +566,8 @@ namespace OpenFK
                     updatescript.UseShellExecute = true;
                     _ = Process.Start(updatescript);
                 }
-                if (Settings.Default.customF && Settings.Default.closeFSGUI && FSGUI_process != null)
-                {
-                    FSGUI_process.EnableRaisingEvents = false;
-                    FSGUI_process.Kill();
-                }
-                Application.Exit(); //Closes OpenFK
-                LogManager.LogGeneral("[OpenFK] Radicaclose was called");
+
+                Application.Exit();
             }
 
             //

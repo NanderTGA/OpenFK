@@ -8,10 +8,14 @@ env:
 
 on:
   workflow_dispatch:
+  
   push:
-    branches: [ master ]
+    branches-ignore:
+      - "gh-pages"
+  
   pull_request:
-    branches: [ master ]
+    branches-ignore:
+      - "gh-pages"
 
 jobs:
   build:

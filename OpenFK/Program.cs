@@ -89,7 +89,7 @@ namespace OpenFK
                 if (
                     flashOCXIs64Bit != Environment.Is64BitProcess &&
                     MessageBox.Show(
-                        $"There was an error starting the game! Our checks have concluded this is happening because an incompatible OCX. Do you want to fetch a compatible OCX?",
+                        $"There was an error starting the game! This is very likely happening because an incompatible OCX. Do you want to fetch a compatible OCX?",
                         "OpenFK has crashed!",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Exclamation

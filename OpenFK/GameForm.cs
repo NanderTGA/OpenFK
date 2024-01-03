@@ -245,6 +245,13 @@ namespace OpenFK
                     case "radicaclose":
                         RadicaClose();
                         break;
+                    case "openfk_options":
+                        ConfigForm configForm = new();
+                        configForm.StartPosition = FormStartPosition.CenterParent;
+                        configForm.ShowDialog(this);
+
+                        MessageBox.Show("You may need to restart your game for some of your changes to fully take effect.", "Changed options", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
                     case "fullscreen":
                         if (commandInfo[1] == "1") //Fullscreen Mode
                         {

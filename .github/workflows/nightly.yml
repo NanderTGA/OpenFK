@@ -71,6 +71,9 @@ jobs:
       - name: Build solution
         run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=${{ matrix.configuration }} -property:Platform=${{ matrix.platform }} -verbosity:detailed
       
+      - name: Remove .ocx files
+        run: get-childitem -path "${{ env.projectFolder }}/bin/${{ matrix.platform }}/${{ matrix.configuration }}" -filter *.ocx | foreach-object { remove-item $_.fullname -force }
+
       - name: Upload the build results as an artifact
         uses: actions/upload-artifact@v3
         with:

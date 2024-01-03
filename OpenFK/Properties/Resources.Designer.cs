@@ -62,31 +62,11 @@ namespace OpenFK.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to @echo off
-        ///echo Welcome to OpenFK OCX fetcher!
-        ///echo Written by GittyMac
-        ///echo ------------------------------
-        ///echo Downloading data...
-        ///mkdir tempdl
-        ///cd tempdl
-        ///powershell -Command &quot;Invoke-WebRequest http://download.windowsupdate.com/d/msdownload/update/software/secu/2015/09/windows10.0-kb3087040-x64_ad0f78efb7b122fa9472dbb8050c4f358aceab49.msu -OutFile update.msu&quot;
-        ///echo Extracting MSU...
-        ///expand -f:* update.msu ./ 
-        ///echo Extracting CAB...
-        ///expand Windows10.0-KB3087040-x64.cab -F:* ./
-        ///echo Fetching OCX... [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string FetchOCX {
-            get {
-                return ResourceManager.GetString("FetchOCX", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to echo OpenFK Update in progress...
+        ///echo OpenFK Update in progress...
         ///taskkill /f /im OpenFK.exe
         ///xcopy /s /y &quot;%cd%\tmpdl&quot; &quot;%cd%&quot;
-        ///rmdir /s &quot;%cd%\tmpdl&quot;
-        ///del &quot;%cd%\tmpdl.zip&quot;
+        ///rmdir /s /Q &quot;%cd%\tmpdl&quot;
+        ///del /q &quot;%cd%\tmpdl.zip&quot;
         ///start &quot;&quot; &quot;%cd%\OpenFK.exe&quot;.
         /// </summary>
         internal static string Update {

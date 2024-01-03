@@ -9,9 +9,9 @@ mkdir tempdl
 cd tempdl
 powershell -Command "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest http://download.windowsupdate.com/c/msdownload/update/software/secu/2019/06/windows10.0-kb4503308-x64_b6478017674279c8ba4f06e60fc3bab04ed7ae02.msu -OutFile update.msu"
 echo Extracting MSU...
-expand -f:* update.msu ./ 
+expand update.msu -f:Windows10.0-KB4503308-x64.cab ./
 echo Extracting CAB...
-expand Windows10.0-KB4503308-x64.cab -F:* ./
+expand Windows10.0-KB4503308-x64.cab -f:flash.ocx ./
 echo Fetching OCX...
 IF EXIST "%PROGRAMFILES(X86)%" (GOTO 64BIT) ELSE (GOTO 32BIT)
 

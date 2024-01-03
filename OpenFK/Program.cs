@@ -158,5 +158,24 @@ namespace OpenFK
             Directory.Delete("tempdl", true);
             Application.Restart();
         }
+
+        private static void ExtractFilesFromArchive(string workingDirectory, string archive, string files)
+        {
+            ProcessStartInfo expandProcessStartInfo = new()
+            {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                UseShellExecute = true,
+                WorkingDirectory = workingDirectory,
+                FileName = "expand.exe",
+                Arguments = $@"{archive} ""-f:{files}"" ./",
+            };
+
+            Process expandProcess = new()
+            {
+                StartInfo = expandProcessStartInfo,
+            };
+            expandProcess.Start();
+            expandProcess.WaitForExit();
+        }
     }
 }

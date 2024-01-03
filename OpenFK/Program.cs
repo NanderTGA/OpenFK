@@ -32,26 +32,6 @@ namespace OpenFK
                 return;
             }
 
-            if (
-                Environment.Is64BitProcess != Environment.Is64BitOperatingSystem &&
-                MessageBox.Show(
-                    "You are using a 32-bit version of OpenFK on a 64-bit operating system! We highly recommend you to use the 64-bit version instead. Do you want to download the 64-bit version?",
-                    "Wrong OpenFK version",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning
-                ) == DialogResult.Yes
-            )
-            {
-                // TODO: make use of the update feature to download & install it ourselves, see #8
-                Process.Start("https://github.com/GittyMac/OpenFK/releases/latest");
-                _ = MessageBox.Show(
-                    $"Please download the latest version labeled x64. {feelFreeToAskForHelp}",
-                    "OpenFK",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-            }
-
             if (!File.Exists("Flash.ocx"))
             {
                 bool downloadOCX = MessageBox.Show(

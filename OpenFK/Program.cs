@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -86,11 +86,10 @@ namespace OpenFK
                 bool? flashOCXIs64Bit = ArchitectureUtils.UnmanagedDllIs64Bit("Flash.ocx");
                 string errorInformation = "";
 
-                if (flashOCXIs64Bit == null) errorInformation = " This might be happening because of a 64 bit OCX running on a 32 bit OpenFK or vice versa (NOTE: our checks could not draw any conclusions).";
-                else if (
+                if (
                     flashOCXIs64Bit != Environment.Is64BitProcess &&
                     MessageBox.Show(
-                        $"There was an error starting the game! Our checks have concluded this is happening because of a 64 bit OCX running on a 32 bit OpenFK or vice versa. Do you want to fetch a compatible OCX?",
+                        $"There was an error starting the game! Our checks have concluded this is happening because an incompatible OCX. Do you want to fetch a compatible OCX?",
                         "OpenFK has crashed!",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Exclamation

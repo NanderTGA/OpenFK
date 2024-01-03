@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -122,8 +122,6 @@ namespace OpenFK
         private static void FetchOCX()
         {
             Directory.CreateDirectory("tempdl");
-            File.WriteAllText("tempdl\\FetchOCX.bat", Resources.FetchOCX);
-
             string tempdlPath = Path.Combine(Environment.CurrentDirectory, "tempdl");
 
             using (WebClient client = new())
@@ -134,13 +132,9 @@ namespace OpenFK
                 );
             }
 
-            ProcessStartInfo fetchOCXProcessStartInfo = new(Path.Combine(tempdlPath, "FetchOCX.bat"))
-            {
-                UseShellExecute = false,
-                WorkingDirectory = tempdlPath
-            };
-            Process fetchOCXProcess = Process.Start(fetchOCXProcessStartInfo);
-            fetchOCXProcess.WaitForExit();
+            const string cabFile = "Windows10.0-KB4503308-x64.cab";
+            ExtractFilesFromArchive(tempdlPath, "update.msu", cabFile);
+            ExtractFilesFromArchive(tempdlPath, cabFile, "flash.ocx");
 
             string flashOCXPath = Environment.Is64BitProcess ?
                 @"tempdl\amd64_adobe-flash-for-windows_31bf3856ad364e35_10.0.18362.172_none_815470a5fb446c4e\flash.ocx" :
@@ -148,8 +142,26 @@ namespace OpenFK
             File.Copy(flashOCXPath, "Flash.ocx");
 
             Directory.Delete("tempdl", true);
-
             Application.Restart();
+        }
+
+        private static void ExtractFilesFromArchive(string workingDirectory, string archive, string files)
+        {
+            ProcessStartInfo expandProcessStartInfo = new()
+            {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                UseShellExecute = true,
+                WorkingDirectory = workingDirectory,
+                FileName = "expand.exe",
+                Arguments = $@"{archive} ""-f:{files}"" ./",
+            };
+
+            Process expandProcess = new()
+            {
+                StartInfo = expandProcessStartInfo,
+            };
+            expandProcess.Start();
+            expandProcess.WaitForExit();
         }
     }
 }

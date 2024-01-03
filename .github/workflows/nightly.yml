@@ -47,6 +47,27 @@ jobs:
       - name: Restore Packages
         run: nuget restore ${{ env.solutionFile }}
       
+      - name: Get version from update.xml
+        id: getVersion
+        uses: mavrosxristoforos/get-xml-info@1.2.1
+        with:
+          xml-file: update.xml
+          xpath: //update/@version
+      
+      - name: Normalize the version string into SemVer format (x.x.x)
+        id: normalizeVersion
+        run: |
+          $versionString = "${{ steps.getVersion.outputs.info }}"
+          $digits = $versionString.Split(".").Length
+          if ($digits -eq 1) { $versionString += ".0.0" }
+          elseif ($digits -eq 2) { $versionString += ".0" }
+          "VERSION=$($versionString)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+      
+      - name: Set version in AssemblyInfo.cs
+        uses: secondbounce/assemblyinfo-update@v2
+        with:
+          version: "${{ steps.normalizeVersion.outputs.VERSION }}"
+
       - name: Build solution
         run: msbuild ${{ env.solutionFile }} -t:rebuild -property:Configuration=${{ matrix.configuration }} -property:Platform=${{ matrix.platform }} -verbosity:detailed
       

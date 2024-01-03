@@ -58,7 +58,7 @@ namespace OpenFK
             Settings.Default.TCPHost = TCPHostBox.Text;
             Settings.Default.TCPPort = TCPPortBox.Text;
             Settings.Default.Save();
-            Application.Exit();
+            this.Close();
         }
 
         private void RDFToggle_CheckedChanged(object sender, EventArgs e)

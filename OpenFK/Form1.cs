@@ -338,6 +338,14 @@ namespace OpenFK
                 }
                 return;
             }
+            else if (e.args.Contains("<openfk_options"))
+            {
+                ConfigForm configForm = new();
+                configForm.StartPosition = FormStartPosition.CenterParent;
+                configForm.ShowDialog(this);
+
+                MessageBox.Show("You may need to restart your game for some of your changes to fully take effect.", "Changed options", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
             else
             {   // Don't log incoming message that are logs to prevent clutter.
                 LogManager.LogIncoming($"[AS2] [{e.command}] {e.args}");

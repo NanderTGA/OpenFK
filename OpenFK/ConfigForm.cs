@@ -77,7 +77,7 @@ namespace OpenFK
             UpdateTextboxes();
         }
 
-        void UpdateTextboxes()
+        private void UpdateTextboxes()
         {
             if (Settings.Default.IsOnline)
             {

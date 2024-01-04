@@ -80,20 +80,10 @@ namespace OpenFK
 
         private void UpdateTextboxes()
         {
-            if (Settings.Default.IsOnline)
-            {
-                HTTPBox1.Enabled = true;
-                HTTPBox2.Enabled = true;
-                TCPHostBox.Enabled = true;
-                TCPPortBox.Enabled = true;
-            }
-            else
-            {
-                HTTPBox1.Enabled = false;
-                HTTPBox2.Enabled = false;
-                TCPHostBox.Enabled = false;
-                TCPPortBox.Enabled = false;
-            }
+            HTTPBox1.Enabled = Settings.Default.IsOnline;
+            HTTPBox2.Enabled = Settings.Default.IsOnline;
+            TCPHostBox.Enabled = Settings.Default.IsOnline;
+            TCPPortBox.Enabled = Settings.Default.IsOnline;
         }
     }
 }

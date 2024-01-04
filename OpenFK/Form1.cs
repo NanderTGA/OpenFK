@@ -1,4 +1,4 @@
-﻿using AxShockwaveFlashObjects;
+using AxShockwaveFlashObjects;
 using DiscordRPC;
 using Microsoft.Win32;
 using OpenFK.OFK.Common;
@@ -77,7 +77,6 @@ namespace OpenFK
         public XmlDocument userData;
         public DiscordRpcClient client;
         private FileSystemWatcher watcher;
-        private Process FSGUI_process;
 
         public Form1(string[] args)
         {
@@ -140,8 +139,6 @@ namespace OpenFK
                 watcher.Changed += OnChanged;
                 watcher.SynchronizingObject = AS2Container;
                 watcher.EnableRaisingEvents = true;
-
-                if (Settings.Default.startFSGUI == true) StartFSGUI();
             }
             //End of customF Initialization
 
@@ -561,13 +558,6 @@ namespace OpenFK
                     }
                     catch { }
                 }
-
-                if (Settings.Default.customF && Settings.Default.closeFSGUI && FSGUI_process != null)
-                {
-                    FSGUI_process.EnableRaisingEvents = false;
-                    FSGUI_process.Kill();
-                }
-
                 if(WasUpdated == true) //If the game was updated. I don't know why it doesn't use a special command, but fine I guess...
                 {
                     File.WriteAllText(Directory.GetCurrentDirectory() + @"\update.bat", Resources.Update);
@@ -854,9 +844,9 @@ namespace OpenFK
             //FSGUI
             //
 
-            if (e.args.Contains("<fsgui ") && Settings.Default.startFSGUI == false)
+            if (e.args.Contains("<fsgui ")) //fsgui
             {
-                StartFSGUI();
+                //Open FSGUI
             }
 
             //
@@ -889,11 +879,6 @@ namespace OpenFK
                 {
                     Process process = Process.GetProcessesByName("MegaByte")[0];
                     process.Kill();
-                }
-                if (Settings.Default.customF && Settings.Default.closeFSGUI && FSGUI_process != null)
-                {
-                    FSGUI_process.EnableRaisingEvents = false;
-                    FSGUI_process.Kill();
                 }
                 Application.Exit(); //Closes OpenFK
             }
@@ -1164,28 +1149,5 @@ namespace OpenFK
         //
         //END OF HTTP GET
         //
-
-        public void StartFSGUI(object sender = null, EventArgs e = null)
-        {
-            ProcessStartInfo FSGUI_processStartInfo = new()
-            {
-                FileName = Directory.GetCurrentDirectory() + @"\FunkeySelectorGUI.exe",
-                UseShellExecute = false,
-                WindowStyle = ProcessWindowStyle.Minimized // this doesn't work for whatever reason
-            };
-
-            FSGUI_process = new Process
-            {
-                StartInfo = FSGUI_processStartInfo
-            };
-
-            if (Settings.Default.keepFSGUI)
-            {
-                FSGUI_process.EnableRaisingEvents = true;
-                FSGUI_process.Exited += StartFSGUI;
-            }
-
-            FSGUI_process.Start();
-        }
     }
 }

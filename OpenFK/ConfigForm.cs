@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows.Forms;
 using OpenFK.Properties;
 
@@ -20,7 +21,7 @@ namespace OpenFK
             HTTPHost2Box.Text = Settings.Default.HTTPHost2;
             TCPHostBox.Text = Settings.Default.TCPHost;
             TCPPortBox.Text = Settings.Default.TCPPort;
-            OpenFKVersionLabel.Text = "OpenFK v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            OpenFKVersionLabel.Text = "OpenFK v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             UpdateTextboxes();
         }
 

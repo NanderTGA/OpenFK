@@ -345,6 +345,7 @@ namespace OpenFK
                 configForm.ShowDialog(this);
 
                 MessageBox.Show("You may need to restart your game for some of your changes to fully take effect.", "Changed options", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
             else
             {   // Don't log incoming message that are logs to prevent clutter.

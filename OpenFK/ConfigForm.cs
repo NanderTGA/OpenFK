@@ -9,19 +9,19 @@ namespace OpenFK
         public ConfigForm()
         {
             InitializeComponent();
-            CustomFtoggle.Checked = Settings.Default.customF;
+            CustomFToggle.Checked = Settings.Default.customF;
             RPCToggle.Checked = Settings.Default.RPC;
             RDFToggle.Checked = Settings.Default.RDF;
             QualityCB.SelectedIndex = Settings.Default.Quality;
             ScaleCB.SelectedIndex = Settings.Default.ScaleMode;
             USBToggle.Checked = Settings.Default.USBSupport;
             OnlineToggle.Checked = Settings.Default.IsOnline;
-            HTTPBox1.Text = Settings.Default.HTTPHost1;
-            HTTPBox2.Text = Settings.Default.HTTPHost2;
+            HTTPHost1Box.Text = Settings.Default.HTTPHost1;
+            HTTPHost2Box.Text = Settings.Default.HTTPHost2;
             TCPHostBox.Text = Settings.Default.TCPHost;
             TCPPortBox.Text = Settings.Default.TCPPort;
             string currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            label8.Text = "OpenFK v" + currentVersion.Substring(0, currentVersion.LastIndexOf("."));
+            OpenFKVersionLabel.Text = "OpenFK v" + currentVersion.Substring(0, currentVersion.LastIndexOf("."));
             UpdateTextboxes();
         }
 
@@ -39,7 +39,7 @@ namespace OpenFK
 
         private void CustomFtoggle_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.customF = CustomFtoggle.Checked;
+            Settings.Default.customF = CustomFToggle.Checked;
             Settings.Default.Save();
         }
 
@@ -51,8 +51,8 @@ namespace OpenFK
 
         private void ExitButton_Click(object sender, EventArgs e)
         {
-            Settings.Default.HTTPHost1 = HTTPBox1.Text;
-            Settings.Default.HTTPHost2 = HTTPBox2.Text;
+            Settings.Default.HTTPHost1 = HTTPHost1Box.Text;
+            Settings.Default.HTTPHost2 = HTTPHost2Box.Text;
             Settings.Default.TCPHost = TCPHostBox.Text;
             Settings.Default.TCPPort = TCPPortBox.Text;
             Settings.Default.Save();
@@ -80,8 +80,8 @@ namespace OpenFK
 
         private void UpdateTextboxes()
         {
-            HTTPBox1.Enabled = Settings.Default.IsOnline;
-            HTTPBox2.Enabled = Settings.Default.IsOnline;
+            HTTPHost1Box.Enabled = Settings.Default.IsOnline;
+            HTTPHost2Box.Enabled = Settings.Default.IsOnline;
             TCPHostBox.Enabled = Settings.Default.IsOnline;
             TCPPortBox.Enabled = Settings.Default.IsOnline;
         }

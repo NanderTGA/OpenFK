@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,7 +8,6 @@ using System.Threading;
 using System.Windows.Forms;
 using OpenFK.OFK.Net;
 using OpenFK.OFK.Common;
-using OpenFK.Properties;
 
 namespace OpenFK
 {

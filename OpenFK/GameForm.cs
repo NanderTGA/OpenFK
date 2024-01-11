@@ -401,7 +401,7 @@ namespace OpenFK
 
         private void GameForm_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == '`')
+            if (e.KeyChar == '`' || e.KeyChar == '²')
             {
                 BittyManager.ShowGUI();
             }

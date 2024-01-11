@@ -1,4 +1,4 @@
-using AxShockwaveFlashObjects;
+﻿using AxShockwaveFlashObjects;
 using OpenFK.OFK.Common;
 using OpenFK.OFK.Core;
 using OpenFK.OFK.Net;
@@ -140,6 +140,12 @@ namespace OpenFK
 
         void flashPlayer_FSCommand(object sender, _IShockwaveFlashEvents_FSCommandEvent e)
         {
+            if (e.command != "SendMsg")
+            {
+                LogManager.LogGeneral($"[AS2] [UNHANDLED] [{e.command}] {e.args}");
+                return;
+            }
+
             string[] commandsList;
 
             try

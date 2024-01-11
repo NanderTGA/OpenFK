@@ -1,4 +1,4 @@
-﻿using AxShockwaveFlashObjects;
+using AxShockwaveFlashObjects;
 using OpenFK.OFK.Common;
 using OpenFK.OFK.Core;
 using OpenFK.OFK.Net;
@@ -32,8 +32,8 @@ namespace OpenFK
             if (args.Contains("/debug"))
             {
                 Globals.IsDebug = true;
-                DebugForm debug = new DebugForm();
-                debug.Show();
+                DebugForm debugForm = new();
+                debugForm.Show();
             }
         }
 

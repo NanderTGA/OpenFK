@@ -1,4 +1,4 @@
-﻿using AxShockwaveFlashObjects;
+using AxShockwaveFlashObjects;
 using OpenFK.OFK.Common;
 using OpenFK.OFK.Core;
 using OpenFK.OFK.Net;
@@ -355,14 +355,15 @@ namespace OpenFK
 
         void StartUpdate()
         {
-            if (Globals.WasUpdated)
+            if (!Globals.WasUpdated) return;
+
+            ProcessStartInfo updatescript = new(@"tmpdl\OpenFK.exe")
             {
-                ProcessStartInfo updatescript = new ProcessStartInfo(Directory.GetCurrentDirectory() + @"\tmpdl\OpenFK.exe");
-                updatescript.Arguments = "/update";
-                updatescript.WorkingDirectory = Directory.GetCurrentDirectory() + @"\tmpdl";
-                updatescript.UseShellExecute = false;
-                Process.Start(updatescript);
-            }
+                Arguments = "/update",
+                WorkingDirectory = "tmpdl",
+                UseShellExecute = false
+            };
+            Process.Start(updatescript);
         }
 
         public void SetVar(string msg)

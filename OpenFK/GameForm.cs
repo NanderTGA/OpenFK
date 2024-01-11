@@ -1,4 +1,4 @@
-using AxShockwaveFlashObjects;
+﻿using AxShockwaveFlashObjects;
 using OpenFK.OFK.Common;
 using OpenFK.OFK.Core;
 using OpenFK.OFK.Net;
@@ -186,7 +186,7 @@ namespace OpenFK
                         string tnurl = "";
                         if (e.args.Contains("<save_level "))
                         {
-                            XmlDocument request = new XmlDocument();
+                            XmlDocument request = new();
                             request.LoadXml(e.args);
                             XmlNodeList xnList = request.SelectNodes("/netcommands/save_level");
                             foreach (XmlNode xn in xnList)
@@ -194,10 +194,8 @@ namespace OpenFK
                                 tnurl = xn.Attributes["tnurl"].Value;
                             }
 
-                            using (var client = new WebClient())
-                            {
-                                client.UploadFile(HttpManager.UGHost + "/" + tnurl, "PUT", Directory.GetCurrentDirectory() + @"\" + tnurl);
-                            }
+                            using WebClient client = new();
+                            client.UploadFile($"{HttpManager.UGHost}/{tnurl}", "PUT", Path.GetFullPath(tnurl));
                         }
 
                         if (Settings.Default.IsOnline)
@@ -217,7 +215,7 @@ namespace OpenFK
 
                     // ------------------------------ LogManager ---------------------------- \\
                     case "log":
-                        var log = new XmlDocument();
+                        XmlDocument log = new();
                         log.LoadXml(e.args);
                         var node = log.SelectSingleNode("/log");
                         string message = node.InnerText;
@@ -288,7 +286,7 @@ namespace OpenFK
                         //The game unescapes this string. "<commands><setid id="0" /></commands>" is the string. Unsure if it does anything, but it does not give a failure.
                         AS3Container.CallFunction(@"<invoke name=""WrapperCall"" returntype=""xml""><arguments><string>setid</string><string>%3c%63%6f%6d%6d%61%6e%64%73%3e%3c%73%65%74%69%64%20%69%64%3d%22%30%22%20%2f%3e%3c%2f%63%6f%6d%6d%61%6e%64%73%3e</string><string>%3c%63%6f%6d%6d%61%6e%64%73%3e%3c%73%65%74%69%64%20%69%64%3d%22%30%22%20%2f%3e%3c%2f%63%6f%6d%6d%61%6e%64%73%3e</string></arguments></invoke>");
                         AS3Container.SendToBack();
-                        Directory.Delete(Directory.GetCurrentDirectory() + @"\misc\tmp\", true); //Deletes the temporary folder used for the results.
+                        Directory.Delete(@"misc\tmp\", true); //Deletes the temporary folder used for the results.
                         break;
                     case "checktrunkupdate":
                         SetVar(@"<checktrunkupdate result=""0"" reason=""Everything is up to date."" />");

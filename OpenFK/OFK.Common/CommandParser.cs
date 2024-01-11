@@ -14,7 +14,7 @@ namespace OpenFK.OFK.Common
         /// </returns>
         public static string[] ParseReceivedMessage(string xmlCommand)
         {
-            List<string> commandsList = new List<string>();
+            List<string> commandsList = new();
 
             xmlCommand = xmlCommand.Replace("\0", string.Empty);
 
@@ -42,7 +42,7 @@ namespace OpenFK.OFK.Common
         /// </returns>
         public static string[] ParseCommand(string command)
         {
-            List<string> commandInfo = new List<string>();
+            List<string> commandInfo = new();
 
             XDocument commandXML = XDocument.Parse(command);
             XElement commandRoot = commandXML.Root;

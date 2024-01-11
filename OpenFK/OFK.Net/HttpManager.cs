@@ -60,7 +60,7 @@ namespace OpenFK.OFK.Net
             //TODO - Simplify these get_CATEGORY thumbnail requests as they are all the same.
             if (responseString.Contains("<get_level "))
             {
-                XmlDocument xRequest = new XmlDocument(); //e.args to xml
+                XmlDocument xRequest = new(); //e.args to xml
                 xRequest.LoadXml(responseString);
                 XmlNodeList xnList = xRequest.SelectNodes("/get_level/level"); //filters xml to the load info
                 foreach (XmlNode xn in xnList)
@@ -73,15 +73,13 @@ namespace OpenFK.OFK.Net
 
                 if (tnurl != "")
                 {
-                    using (var client = new System.Net.WebClient())
-                    {
-                        client.DownloadFile(UGHost + "/" + tnurl, Directory.GetCurrentDirectory() + @"\" + tnurl);
-                    }
+                    using WebClient client = new();
+                    client.DownloadFile($"{UGHost}/{tnurl}", Path.GetFullPath(tnurl));
                 }
             }
             else if (responseString.Contains("<get_top "))
             {
-                XmlDocument xRequest = new XmlDocument(); //e.args to xml
+                XmlDocument xRequest = new(); //e.args to xml
                 xRequest.LoadXml(responseString);
                 XmlNodeList xnList = xRequest.SelectNodes("/get_top/levels/level"); //filters xml to the load info
                 foreach (XmlNode xn in xnList)
@@ -90,18 +88,14 @@ namespace OpenFK.OFK.Net
                     {
                         tnurl = xn.Attributes["tnurl"].Value;
                     }
-                    if (tnurl != "")
-                    {
-                        using (var client = new System.Net.WebClient())
-                        {
-                            client.DownloadFile(UGHost + "/" + tnurl, Directory.GetCurrentDirectory() + @"\" + tnurl);
-                        }
-                    }
+                    if (tnurl == "") continue;
+                    using WebClient client = new();
+                    client.DownloadFile($"{UGHost}/{tnurl}", Path.GetFullPath(tnurl));
                 }
             }
             else if (responseString.Contains("<get_sh_levels "))
             {
-                XmlDocument xRequest = new XmlDocument(); //e.args to xml
+                XmlDocument xRequest = new(); //e.args to xml
                 xRequest.LoadXml(responseString);
                 XmlNodeList xnList = xRequest.SelectNodes("/get_sh_levels/levels/level"); //filters xml to the load info
                 foreach (XmlNode xn in xnList)
@@ -110,13 +104,9 @@ namespace OpenFK.OFK.Net
                     {
                         tnurl = xn.Attributes["tnurl"].Value;
                     }
-                    if (tnurl != "")
-                    {
-                        using (var client = new System.Net.WebClient())
-                        {
-                            client.DownloadFile(UGHost + "/" + tnurl, Directory.GetCurrentDirectory() + @"\" + tnurl);
-                        }
-                    }
+                    if (tnurl == "") continue;
+                    using var client = new WebClient();
+                    client.DownloadFile($"{UGHost}/{tnurl}", Path.GetFullPath(tnurl));
                 }
             }
 
@@ -138,12 +128,10 @@ namespace OpenFK.OFK.Net
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
+            using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            using Stream stream = response.GetResponseStream();
+            using StreamReader reader = new(stream);
+            return reader.ReadToEnd();
         }
     }
 }

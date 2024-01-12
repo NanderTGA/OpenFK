@@ -34,11 +34,11 @@ namespace OpenFK.OFK.Core
             {
                 if (Settings.Default.RDF == true)
                 {
-                    byte[] RDFData = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\data\" + name + @"\" + section + ".rdf");
+                    byte[] RDFData = File.ReadAllBytes($@"data\{name}\{section}.rdf");
                     filedata = RDFManager.DecodeRDF(iso_8859_1.GetString(RDFData));
                 }
-                else filedata = File.ReadAllText(Directory.GetCurrentDirectory() + @"\data\" + name + @"\" + section + ".xml");
-                response = @"<commands><load section=""" + section + @""" name=""" + name + @""" result=""0"" reason="""">" + filedata + @"</load></commands>";
+                else filedata = File.ReadAllText($@"data\{name}\{section}.xml");
+                response = $@"<commands><load section=""{section}"" name=""{name}"" result=""0"" reason="""">{filedata}</load></commands>";
 
                 switch (section) 
                 {
@@ -69,7 +69,7 @@ namespace OpenFK.OFK.Core
                             tcpPort.Value = Settings.Default.TCPPort;
 
                             filedata = configData.OuterXml;
-                            response = @"<commands><load section=""" + section + @""" name=""" + name + @""" result=""0"" reason="""">" + filedata + @"</load></commands>";
+                            response = $@"<commands><load section=""{section}"" name=""{name}"" result=""0"" reason="""">{filedata}</load></commands>";
                         }
 
                         XmlNodeList xnList1 = configData.SelectNodes("/settings/host");
@@ -136,7 +136,7 @@ namespace OpenFK.OFK.Core
             catch
             {
                 //UGLevels requires an error to proceed.
-                response = @"<commands><load section=""" + section + @""" name=""" + name + @""" result=""1"" reason=""Error loading file!"" /></commands>";
+                response = $@"<commands><load section=""{section}"" name=""{name}"" result=""1"" reason=""Error loading file!"" /></commands>";
             }
             LogManager.LogFile($"[Load] [Success] {name}/{section}");
             return response.ToString();
@@ -156,20 +156,19 @@ namespace OpenFK.OFK.Core
 
             XElement firstChild = args.Root.Elements().First();
 
-            XDocument output = new XDocument(new XDeclaration("1.0", "utf-8", "yes"),
-                                                firstChild);
+            XDocument output = new(new XDeclaration("1.0", "utf-8", "yes"), firstChild);
 
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\data\" + name))
+            if (!Directory.Exists(@$"data\{name}"))
             {
-                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\data\" + name);
+                Directory.CreateDirectory(@$"data\{name}");
             }
             if (Settings.Default.RDF == true)
             {
                 Encoding iso_8859_1 = Encoding.GetEncoding("iso-8859-1");
                 byte[] RDFData = iso_8859_1.GetBytes(output.ToString());
-                File.WriteAllBytes(Directory.GetCurrentDirectory() + @"\data\" + name + @"\" + section + ".rdf", iso_8859_1.GetBytes(RDFManager.EncodeXML(iso_8859_1.GetString(RDFData))));
+                File.WriteAllBytes(@$"data\{name}\{section}.rdf", iso_8859_1.GetBytes(RDFManager.EncodeXML(iso_8859_1.GetString(RDFData))));
             }
-            else File.WriteAllText(Directory.GetCurrentDirectory() + @"\data\" + name + @"\" + section + ".xml", output.ToString()); //saves
+            else File.WriteAllText(@$"data\{name}\{section}.xml", output.ToString());
             LogManager.LogFile($"[Save] [Success] {name}/{section}");
         }
 
@@ -179,7 +178,7 @@ namespace OpenFK.OFK.Core
         public static void DeleteFile(string path) 
         {
             LogManager.LogFile($"[Delete] {path}");
-            File.Delete(Directory.GetCurrentDirectory() + @"\" + path);
+            File.Delete(path);
         }
 
         /// <summary>
@@ -191,8 +190,8 @@ namespace OpenFK.OFK.Core
         public static void SaveJPEG(string idfrom, string str, string name)
         {
             var bytes = Convert.FromBase64String(str);
-            Directory.CreateDirectory(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\" + name));
-            using (var jpegToSave = new FileStream(Directory.GetCurrentDirectory() + @"\" + name, FileMode.Create))
+            Directory.CreateDirectory(Path.GetDirectoryName(name));
+            using (var jpegToSave = new FileStream(name, FileMode.Create))
             {
                 jpegToSave.Write(bytes, 0, bytes.Length);
                 jpegToSave.Flush();
@@ -208,18 +207,18 @@ namespace OpenFK.OFK.Core
             LogManager.LogFile("[Load] File Requested - system/users");
             LoadFile("users", "system");
             string userString = UserData.OuterXml;
-            string data2send = userString.Replace("</users>", "") + @"<user gname=""" + name + @""" hinta=""" + hinta + @""" hintq=""" + hintq + @""" savepassword=""" + savepassword + @""" password=""" + password + @""" name=""" + name + @""" /></users>";
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\data\" + "system"))
+            string data2send = userString.Replace("</users>", "") + @$"<user gname=""{name}"" hinta=""{hinta}"" hintq=""{hintq}"" savepassword=""{savepassword}"" password=""{password}"" name=""{name}"" /></users>";
+            if (!Directory.Exists(@"data\system"))
             {
-                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\data\" + "system");
+                Directory.CreateDirectory(@"data\system");
             }
             if (Settings.Default.RDF == true)
             {
                 Encoding iso_8859_1 = Encoding.GetEncoding("iso-8859-1");
                 byte[] RDFData = iso_8859_1.GetBytes(data2send.ToString());
-                File.WriteAllBytes(Directory.GetCurrentDirectory() + @"\data\" + "system" + @"\" + "users" + ".rdf", iso_8859_1.GetBytes(RDFManager.EncodeXML(iso_8859_1.GetString(RDFData))));
+                File.WriteAllBytes(@"data\system\users.rdf", iso_8859_1.GetBytes(RDFManager.EncodeXML(iso_8859_1.GetString(RDFData))));
             }
-            else File.WriteAllText(Directory.GetCurrentDirectory() + @"\data\" + "system" + @"\" + "users" + ".xml", data2send.ToString());
+            else File.WriteAllText(@"data\system\users.xml", data2send.ToString());
             LogManager.LogFile("[UserAdd] [Success] " + name);
         }
     }

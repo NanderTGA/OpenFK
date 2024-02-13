@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace OpenFK.OFK.Core
@@ -51,100 +52,91 @@ namespace OpenFK.OFK.Core
             //customF Initialization
             if (Settings.Default.customF == true)
             {
-                BittyWatcher = new FileSystemWatcher();
-                BittyWatcher.Path = Directory.GetCurrentDirectory();
-                BittyWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-                                       | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-                BittyWatcher.Filter = "customF.txt";
-                BittyWatcher.Changed += OnChanged;
-                BittyWatcher.SynchronizingObject = Globals.AS2Container;
-                BittyWatcher.EnableRaisingEvents = true;
-
-                if (File.Exists(Directory.GetCurrentDirectory() + @"\FunkeySelectorGUI.exe"))
+                BittyWatcher = new FileSystemWatcher
                 {
-                    Process.Start(Directory.GetCurrentDirectory() + @"\FunkeySelectorGUI.exe");
+                    Path = Directory.GetCurrentDirectory(),
+                    NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+                    Filter = "customF.txt",
+                    SynchronizingObject = Globals.AS2Container,
+                    EnableRaisingEvents = true
+                };
+                BittyWatcher.Changed += OnFileSystemChanged;
+
+                if (File.Exists("FunkeySelectorGUI.exe"))
+                {
+                    Process.Start("FunkeySelectorGUI.exe");
                     Thread.Sleep(500);
                     ShowGUI();
+                } else
+                {
+                    MessageBox.Show("FunkeySelectorGUI could not be found! It is possible you may be using an outdated version. If the problem doesn't fix itself within two days, please ask for help on the U.B. Funkeys Discord server or on r/UBFunkeys", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
             if (Settings.Default.USBSupport == true)
             {
-                //WinForms uses a randomized class name, so we fill in Config.ini with OpenFK's info.
-                var className = new StringBuilder(256);
+                // WinForms uses a randomized class name, so we fill in Config.ini with OpenFK's info.
+                StringBuilder className = new(256);
                 GetClassName(Globals.GameForm.Handle, className, className.Capacity);
 
-                string configFile = Directory.GetParent(Directory.GetCurrentDirectory()) + @"\Config.ini";
+                string configFile = @"..\Config.ini";
                 string[] configLines = File.ReadAllLines(configFile);
-                configLines[11] = @"ClassName=""" + className.ToString() + @"""";
-                configLines[12] = @"WindowName=""OpenFK""";
+                configLines[11] = @$"ClassName=""{className}""";
+                configLines[12] = @$"WindowName=""{Globals.GameForm.Text}""";
                 File.WriteAllLines(configFile, configLines);
 
                 var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers", true);
                 if (key == null)
                     throw new InvalidOperationException(@"Cannot open registry key HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers.");
                 using (key)
-                    key.SetValue(Directory.GetParent(Directory.GetCurrentDirectory()) + @"\MegaByte\" + "MegaByte.exe", "VISTASP2");
-                Process MBRun = new Process();
-                ProcessStartInfo MBData = new ProcessStartInfo();
-                MBData.FileName = Directory.GetParent(Directory.GetCurrentDirectory()) + @"\MegaByte\" + "MegaByte.exe";
-                if (Globals.IsDebug) 
-                    MBData.Arguments = "-MBRun -MBDebug";
-                else 
-                    MBData.Arguments = "-MBRun";
-                
-                MBData.UseShellExecute = false;
-                MBData.WindowStyle = ProcessWindowStyle.Minimized;
-                MBRun.StartInfo = MBData;
-                MBRun.Start();
+                    key.SetValue(Path.GetFullPath(@"..\MegaByte\MegaByte.exe"), "VISTASP2");
+
+                ProcessStartInfo MBData = new()
+                {
+                    FileName = @"..\MegaByte\MegaByte.exe",
+                    Arguments = Globals.IsDebug ? "-MBRun -MBDebug" : "-MBRun",
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Minimized
+                };
+                _ = Process.Start(MBData);
             }
         }
 
-        static void OnChanged(object sender, FileSystemEventArgs e)
+        static void OnFileSystemChanged(object sender, FileSystemEventArgs e)
         {
             try //Runs a loop to keep reading until the file is not being saved.
             {
-                SetBitty(File.ReadAllText(Directory.GetCurrentDirectory() + @"\customF.txt").Remove(0, 14), false);
+                SetBitty(File.ReadAllText("customF.txt").Remove(0, 14), false);
             }
             catch
             {
-                OnChanged(sender, e);
+                OnFileSystemChanged(sender, e);
             }
         }
 
         public static void SetBitty(string localBittyID, bool isMB)
         {
-            if (BittyID != localBittyID)
+            if (BittyID == localBittyID) return;
+            if (isMB)
             {
-                if (isMB)
-                {
-                    string mbBitty = Regex.Replace(localBittyID, @"[^\w\d]", "");
-                    Globals.GameForm.SetVar(@$"<bitybyte id=""{mbBitty}"" />");
-                }
-                else
-                {
-                    Globals.GameForm.SetVar(@$"<bitybyte id=""{localBittyID}00000000"" />");
-                }
-                BittyID = localBittyID;
-
-                RichPresenceManager.CurrentBitty = localBittyID.ToLower();
-                if (Settings.Default.RPC == true)
-                {
-                    try
-                    {
-                        XmlNodeList nodes = RichPresenceManager.BittyData.SelectNodes("//funkey[@id='" + localBittyID + "']");
-                        foreach (XmlNode xn in nodes)
-                        {
-                            RichPresenceManager.CurrentBittyName = xn.Attributes["name"].Value;
-                        }
-                        RichPresenceManager.SetRP(RichPresenceManager.CurrentWorld, RichPresenceManager.CurrentActivity, RichPresenceManager.CurrentBitty, RichPresenceManager.CurrentBittyName);
-                    }
-                    catch
-                    {
-
-                    }
-                }
+                string mbBitty = Regex.Replace(localBittyID, @"[^\w\d]", "");
+                Globals.GameForm.SetVar(@$"<bitybyte id=""{mbBitty}"" />");
             }
+            else
+            {
+                Globals.GameForm.SetVar(@$"<bitybyte id=""{localBittyID}00000000"" />");
+            }
+            BittyID = localBittyID;
+
+            RichPresenceManager.CurrentBitty = localBittyID.ToLower();
+            if (!Settings.Default.RPC) return;
+            try
+            {
+                XmlNode funkeyXmlNode = RichPresenceManager.BittyData?.SelectSingleNode($"//funkey[@id='{localBittyID}']");
+                RichPresenceManager.CurrentBittyName = funkeyXmlNode != null ? funkeyXmlNode.Attributes["name"].Value : "Unknown funkey";
+                RichPresenceManager.SetRP(RichPresenceManager.CurrentWorld, RichPresenceManager.CurrentActivity, RichPresenceManager.CurrentBitty, RichPresenceManager.CurrentBittyName);
+            }
+            catch { }
         }
 
         public static void ShowGUI() 
@@ -153,17 +145,16 @@ namespace OpenFK.OFK.Core
             try
             {
                 IntPtr hwnd = FindWindowByCaption(IntPtr.Zero, "FunkeySelectorGUI");
-                if (IsIconic(hwnd)) 
-                {
-                    ShowWindow(hwnd, SW_SHOWNORMAL);
-                    int gameFormCenterX = Globals.GameForm.Location.X + 50;
-                    int gameFormCenterY = Globals.GameForm.Location.Y + 50;
-                    SetWindowPos(hwnd, IntPtr.Zero, gameFormCenterX, gameFormCenterY, gameFormCenterX, gameFormCenterY, SWP_NOSIZE | SWP_NOZORDER);
-                }
-                else 
+                if (!IsIconic(hwnd))
                 {
                     ShowWindow(hwnd, SW_MINIMIZE);
+                    return;
                 }
+
+                ShowWindow(hwnd, SW_SHOWNORMAL);
+                int gameFormCenterX = Globals.GameForm.Location.X + 50;
+                int gameFormCenterY = Globals.GameForm.Location.Y + 50;
+                SetWindowPos(hwnd, IntPtr.Zero, gameFormCenterX, gameFormCenterY, gameFormCenterX, gameFormCenterY, SWP_NOSIZE | SWP_NOZORDER);
             }
             catch {  }
         }

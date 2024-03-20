@@ -220,6 +220,19 @@ namespace OpenFK
                         var node = log.SelectSingleNode("/log");
                         string message = node.InnerText;
                         LogManager.LogLog(message, commandInfo[1]);
+
+                        if (!Settings.Default.biggerViewModSupport) break;
+
+                        if (message == "Screen:setVisible: _level0.screenMng_mc.zone_mc > true" || message == "Screen:setVisible: _level0.screenMng_mc.hall_mc > true")
+                        {
+                            AS2Container.ScaleMode = 3;
+                            AS3Container.ScaleMode = 3;
+                        }
+                        else if (message == "Screen:setVisible: _level0.screenMng_mc.zone_mc > false")
+                        {
+                            AS2Container.ScaleMode = 0;
+                            AS3Container.ScaleMode = 0;
+                        }
                         break;
                     case "staticstorage":
                         string key = WebUtility.UrlDecode(commandInfo[3]);

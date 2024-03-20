@@ -21,6 +21,7 @@ namespace OpenFK
             HTTPHost2Box.Text = Settings.Default.HTTPHost2;
             TCPHostBox.Text = Settings.Default.TCPHost;
             TCPPortBox.Text = Settings.Default.TCPPort;
+            BiggerViewModToggle.Checked = Settings.Default.biggerViewModSupport;
             string currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             OpenFKVersionLabel.Text = "OpenFK v" + currentVersion.Substring(0, currentVersion.LastIndexOf("."));
             UpdateTextboxes();
@@ -85,6 +86,18 @@ namespace OpenFK
             HTTPHost2Box.Enabled = Settings.Default.IsOnline;
             TCPHostBox.Enabled = Settings.Default.IsOnline;
             TCPPortBox.Enabled = Settings.Default.IsOnline;
+        }
+
+        private void BiggerViewModToggle_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.biggerViewModSupport = BiggerViewModToggle.Checked;
+            if (BiggerViewModToggle.Checked)
+            {
+                Settings.Default.ScaleMode = 3;
+                ScaleCB.SelectedIndex = 3;
+            }
+            ScaleCB.Enabled = !BiggerViewModToggle.Checked;
+            Settings.Default.Save();
         }
     }
 }

@@ -35,5 +35,8 @@
     <Setting Name="TCPPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">80</Value>
     </Setting>
+    <Setting Name="biggerViewModSupport" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

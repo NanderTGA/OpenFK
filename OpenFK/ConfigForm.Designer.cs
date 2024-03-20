@@ -51,6 +51,7 @@
             this.HTTPHost2Label = new System.Windows.Forms.Label();
             this.HTTPHost2Box = new System.Windows.Forms.TextBox();
             this.NetworkSettingsLabel = new System.Windows.Forms.Label();
+            this.BiggerViewModToggle = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // QualityCB
@@ -276,11 +277,23 @@
             this.NetworkSettingsLabel.TabIndex = 13;
             this.NetworkSettingsLabel.Text = "Network Settings";
             // 
+            // BiggerViewModToggle
+            // 
+            this.BiggerViewModToggle.AutoSize = true;
+            this.BiggerViewModToggle.Location = new System.Drawing.Point(199, 131);
+            this.BiggerViewModToggle.Name = "BiggerViewModToggle";
+            this.BiggerViewModToggle.Size = new System.Drawing.Size(142, 17);
+            this.BiggerViewModToggle.TabIndex = 24;
+            this.BiggerViewModToggle.Text = "Bigger view mod support";
+            this.BiggerViewModToggle.UseVisualStyleBackColor = true;
+            this.BiggerViewModToggle.CheckedChanged += new System.EventHandler(this.BiggerViewModToggle_CheckedChanged);
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(361, 311);
+            this.Controls.Add(this.BiggerViewModToggle);
             this.Controls.Add(this.HTTPHost2Label);
             this.Controls.Add(this.HTTPHost2Box);
             this.Controls.Add(this.TCPPortBox);
@@ -337,5 +350,6 @@
         private System.Windows.Forms.Label HTTPHost2Label;
         private System.Windows.Forms.TextBox HTTPHost2Box;
         private System.Windows.Forms.Label NetworkSettingsLabel;
+        private System.Windows.Forms.CheckBox BiggerViewModToggle;
     }
 }

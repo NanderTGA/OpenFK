@@ -94,10 +94,10 @@ namespace OpenFK
             {
                 Application.Run(new GameForm(args));
             }
-            catch
+            catch (Exception exception)
             {
                 bool? flashOCXIs64Bit = ArchitectureUtils.UnmanagedDllIs64Bit("Flash.ocx");
-                string errorInformation = "";
+                string errorInformation = exception.ToString();
 
                 if (
                     flashOCXIs64Bit != Environment.Is64BitProcess &&

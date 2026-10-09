@@ -3,6 +3,9 @@
 # OpenFK
 #### An open source replacement for the U.B. Funkeys executable.
 
+> [!CAUTION]
+> My work on OpenFK and FunkeySelectorGUI has spinned off into a separate project, known as [OpenFunk](https://codeberg.org/OpenFunk/OpenFunk), so I've archived this repo. I'll see you over there!
+
 OpenFK adds new features while doing the same functions as the executable.
 
 ### What does OpenFK do currently?
